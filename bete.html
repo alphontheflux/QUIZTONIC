@@ -8,7 +8,127 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/QUIZTONIC/style/acceuil.css" />
+
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #a8c0ff, #3f87a6);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        overflow: hidden;
+        flex-direction: column;
+      }
+
+      h1 {
+        font-size: 3em;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+        margin-bottom: 40px;
+        text-align: center;
+        letter-spacing: 3px;
+      }
+
+      /* Conteneur des doigts */
+      #fingerContainer {
+        position: relative;
+        width: 90%;
+        max-width: 800px;
+        height: 50vh;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 40px;
+        touch-action: none; /* Désactive le zoom avec les doigts */
+      }
+
+      /* Style des éléments "doigts" */
+      .finger {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(45deg, #ff5f6d, #ffc3a0);
+        color: white;
+        text-align: center;
+        line-height: 70px;
+        border-radius: 50%;
+        font-size: 22px;
+        position: absolute;
+        transition: transform 0.2s ease-in-out, background-color 0.3s ease,
+          box-shadow 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .finger:hover {
+        transform: scale(1.2);
+        cursor: pointer;
+      }
+
+      .chosen {
+        color: #c8df45;
+        background-color: #e60000;
+        box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+        animation: pulse 1s infinite;
+        background: linear-gradient(45deg, #cd3c15, #eb0303);
+      }
+
+      /* Animation de pulsation */
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* Style des boutons */
+      button {
+        padding: 15px 40px;
+        font-size: 1.3em;
+        background-color: #ff5f6d;
+        border: none;
+        border-radius: 50px;
+        color: white;
+        cursor: pointer;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+        text-transform: uppercase;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      button:hover {
+        background-color: #ff4081;
+        transform: scale(1.05);
+      }
+
+      button:active {
+        transform: scale(1);
+      }
+
+      /* Style du bouton "Recommencer" */
+      .refresh-button {
+        background-color: #4caf50;
+      }
+
+      .refresh-button:hover {
+        background-color: #45a049;
+      }
+    </style>
   </head>
   <body>
     <div>
