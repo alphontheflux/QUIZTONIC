@@ -20,27 +20,44 @@
       </button>
     </div>
 
+    <div>
+      <h1>Quiz Tonic</h1>
+      <div id="fingerContainer"></div>
+      <button onclick="chooseFingers()">Choisir</button>
+      <button class="refresh-button" onclick="window.location.reload();">
+        Recommencer
+      </button>
+    </div>
+
     <script>
       let fingers = [];
 
       document
         .getElementById("fingerContainer")
-        .addEventListener("click", function (event) {
+        .addEventListener("touchstart", function (event) {
+          event.preventDefault(); // Empêche le scroll sur mobile
+
           if (fingers.length >= 10) return;
 
-          let finger = document.createElement("div");
-          finger.classList.add("finger");
+          for (let touch of event.touches) {
+            let rect = event.target.getBoundingClientRect();
+            let x = touch.clientX - rect.left;
+            let y = touch.clientY - rect.top;
 
-          let x = event.offsetX;
-          let y = event.offsetY;
-
-          finger.style.left = `${x - finger.offsetWidth / 2}px`;
-          finger.style.top = `${y - finger.offsetHeight / 2}px`;
-
-          finger.innerText = fingers.length + 1;
-          document.getElementById("fingerContainer").appendChild(finger);
-          fingers.push(finger);
+            addFinger(x, y);
+          }
         });
+
+      function addFinger(x, y) {
+        let finger = document.createElement("div");
+        finger.classList.add("finger");
+        finger.style.left = `${x - 35}px`;
+        finger.style.top = `${y - 35}px`;
+
+        finger.innerText = fingers.length + 1;
+        document.getElementById("fingerContainer").appendChild(finger);
+        fingers.push(finger);
+      }
 
       function chooseFingers() {
         if (fingers.length < 2) return;

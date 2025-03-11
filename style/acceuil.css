@@ -20,7 +20,6 @@ h1 {
   margin-bottom: 40px;
   text-align: center;
   letter-spacing: 3px;
-  animation: fadeIn 1s ease-in-out;
 }
 
 /* Conteneur des doigts */
@@ -39,7 +38,7 @@ h1 {
   flex-wrap: wrap;
   gap: 15px;
   margin-bottom: 40px;
-  animation: slideIn 1s ease-in-out;
+  touch-action: none; /* Désactive le zoom avec les doigts */
 }
 
 /* Style des éléments "doigts" */
@@ -56,23 +55,22 @@ h1 {
   transition: transform 0.2s ease-in-out, background-color 0.3s ease,
     box-shadow 0.3s ease;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  animation: bounceIn 0.6s ease-out;
 }
 
 .finger:hover {
   transform: scale(1.2);
   cursor: pointer;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
 
 .chosen {
   color: #c8df45;
-  background: linear-gradient(45deg, #cd3c15, #eb0303);
+  background-color: #e60000;
   box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
   animation: pulse 1s infinite;
+  background: linear-gradient(45deg, #cd3c15, #eb0303);
 }
 
-/* Animation de pulsation pour les "choisis" */
+/* Animation de pulsation */
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -82,45 +80,6 @@ h1 {
   }
   100% {
     transform: scale(1);
-  }
-}
-
-/* Animation d'entrée pour les doigts */
-@keyframes bounceIn {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* Animation de fondu pour le titre */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Animation de glissement pour le conteneur */
-@keyframes slideIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -138,13 +97,11 @@ button {
   margin-top: 20px;
   text-transform: uppercase;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 1s ease-in-out;
 }
 
 button:hover {
   background-color: #ff4081;
   transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 button:active {
@@ -153,70 +110,9 @@ button:active {
 
 /* Style du bouton "Recommencer" */
 .refresh-button {
-  padding: 15px 40px;
-  font-size: 1.3em;
   background-color: #4caf50;
-  border: none;
-  border-radius: 50px;
-  color: white;
-  cursor: pointer;
-  font-weight: 700;
-  transition: all 0.3s ease;
-  margin-top: 20px;
-  text-transform: uppercase;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 1s ease-in-out;
 }
 
 .refresh-button:hover {
   background-color: #45a049;
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-}
-
-.refresh-button:active {
-  transform: scale(1);
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  #fingerContainer {
-    height: 50vh;
-  }
-
-  h1 {
-    font-size: 2.5em;
-  }
-
-  .finger {
-    width: 55px;
-    height: 55px;
-    font-size: 18px;
-  }
-
-  button {
-    padding: 12px 35px;
-    font-size: 1.2em;
-  }
-}
-
-@media (max-width: 480px) {
-  #fingerContainer {
-    height: 40vh;
-  }
-
-  h1 {
-    font-size: 2em;
-  }
-
-  .finger {
-    width: 50px;
-    height: 50px;
-    font-size: 16px;
-  }
-
-  button {
-    padding: 12px 30px;
-    font-size: 1.1em;
-  }
 }
