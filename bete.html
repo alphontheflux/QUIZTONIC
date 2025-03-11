@@ -120,82 +120,75 @@
       </button>
     </div>
     <script>
-      let fingers = {};
+      let fingers = [];
+      let touchPositions = {};
       let selectionTimeout;
 
+      // Gérer le touchstart (ajout de doigt)
       document
         .getElementById("fingerContainer")
         .addEventListener("touchstart", function (event) {
-          event.preventDefault();
+          event.preventDefault(); // Empêche le scroll sur mobile
+
+          // Réinitialiser la liste des doigts
+          fingers.forEach((f) => f.remove());
+          fingers = [];
+          touchPositions = {};
 
           for (let touch of event.touches) {
-            if (!fingers[touch.identifier]) {
-              let rect = event.target.getBoundingClientRect();
-              let x = touch.clientX - rect.left;
-              let y = touch.clientY - rect.top;
+            let rect = event.target.getBoundingClientRect();
+            let x = touch.clientX - rect.left;
+            let y = touch.clientY - rect.top;
 
-              let finger = document.createElement("div");
-              finger.classList.add("finger");
-              finger.style.left = `${x - 45}px`;
-              finger.style.top = `${y - 45}px`;
+            let finger = document.createElement("div");
+            finger.classList.add("finger");
 
-              document.getElementById("fingerContainer").appendChild(finger);
-              fingers[touch.identifier] = finger;
+            finger.style.left = `${x - 45}px`;
+            finger.style.top = `${y - 45}px`;
 
-              setTimeout(() => {
-                finger.classList.add("shrink");
-              }, 300);
-            }
+            document.getElementById("fingerContainer").appendChild(finger);
+            fingers.push(finger);
+            touchPositions[touch.identifier] = finger;
+
+            setTimeout(() => {
+              finger.classList.add("shrink");
+            }, 300);
           }
 
           clearTimeout(selectionTimeout);
           selectionTimeout = setTimeout(chooseFingers, 1500);
         });
 
-      document
-        .getElementById("fingerContainer")
-        .addEventListener("touchmove", function (event) {
-          event.preventDefault();
-
-          for (let touch of event.touches) {
-            let finger = fingers[touch.identifier];
-            if (finger) {
-              let rect = event.target.getBoundingClientRect();
-              let x = touch.clientX - rect.left;
-              let y = touch.clientY - rect.top;
-
-              finger.style.left = `${x - 45}px`;
-              finger.style.top = `${y - 45}px`;
-            }
-          }
-        });
-
+      // Gérer le touchend (retrait d'un doigt)
       document
         .getElementById("fingerContainer")
         .addEventListener("touchend", function (event) {
           for (let touch of event.changedTouches) {
-            let finger = fingers[touch.identifier];
+            let finger = touchPositions[touch.identifier];
             if (finger) {
               finger.remove();
-              delete fingers[touch.identifier];
+              fingers = fingers.filter((f) => f !== finger);
+              delete touchPositions[touch.identifier];
             }
           }
         });
 
       function chooseFingers() {
-        let fingerArray = Object.values(fingers);
+        if (fingers.length < 2) return;
 
-        if (fingerArray.length < 2) return;
+        // Vérification : On s'assure que les doigts sélectionnés existent encore
+        fingers = fingers.filter((f) => document.body.contains(f));
 
-        fingerArray.forEach((f) => f.classList.remove("chosen"));
+        if (fingers.length < 2) return; // Annuler si les doigts ont disparu
+
+        fingers.forEach((f) => f.classList.remove("chosen"));
 
         let chosen = [];
         while (chosen.length < 2) {
-          let index = Math.floor(Math.random() * fingerArray.length);
+          let index = Math.floor(Math.random() * fingers.length);
           if (!chosen.includes(index)) chosen.push(index);
         }
-
-        chosen.forEach((i) => fingerArray[i].classList.add("chosen"));
+        chosen.forEach((i) => fingers[i].classList.add("chosen"));
       }
     </script>
   </body>
