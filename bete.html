@@ -53,20 +53,28 @@
         touch-action: none;
       }
 
-      /* Style des éléments "doigts" */
+      /* Style des doigts */
       .finger {
-        width: 70px;
-        height: 70px;
+        width: 90px;
+        height: 90px;
         background: linear-gradient(45deg, #ff5f6d, #ffc3a0);
         color: white;
         text-align: center;
-        line-height: 70px;
+        line-height: 90px;
         border-radius: 50%;
-        font-size: 22px;
+        font-size: 24px;
         position: absolute;
-        transition: transform 0.5s ease, background-color 0.5s ease,
-          box-shadow 0.5s ease;
+        transition: all 0.3s ease-in-out;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        transform: scale(1.1);
+      }
+
+      /* Après un court instant, le doigt rétrécit légèrement */
+      .finger.shrink {
+        width: 70px;
+        height: 70px;
+        line-height: 70px;
+        transform: scale(1);
       }
 
       /* Animation des doigts sélectionnés */
@@ -140,17 +148,24 @@
 
             let finger = document.createElement("div");
             finger.classList.add("finger");
-            finger.style.left = `${x - 35}px`;
-            finger.style.top = `${y - 35}px`;
+
+            // Positionner le doigt sur l'écran
+            finger.style.left = `${x - 45}px`;
+            finger.style.top = `${y - 45}px`;
 
             document.getElementById("fingerContainer").appendChild(finger);
             fingers.push(finger);
             touchPositions[touch.identifier] = finger;
+
+            // Après 0.3s, le cercle rétrécit légèrement
+            setTimeout(() => {
+              finger.classList.add("shrink");
+            }, 300);
           }
 
           // Lancer le choix après 3 secondes
           clearTimeout(selectionTimeout);
-          selectionTimeout = setTimeout(chooseFingers, 1500);
+          selectionTimeout = setTimeout(chooseFingers, 3000);
         });
 
       // Gérer le touchend (retrait d'un doigt)
