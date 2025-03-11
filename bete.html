@@ -9,7 +9,6 @@
       rel="stylesheet"
     />
     <style>
-      /* Style global */
       body {
         font-family: "Poppins", sans-serif;
         margin: 0;
@@ -52,7 +51,6 @@
         touch-action: none;
       }
 
-      /* Style des doigts */
       .finger {
         width: 120px;
         height: 120px;
@@ -67,14 +65,12 @@
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       }
 
-      /* Après un court instant, le doigt rétrécit légèrement */
       .finger.shrink {
         width: 80px;
         height: 80px;
         line-height: 70px;
       }
 
-      /* Animation des doigts sélectionnés */
       .chosen {
         background: linear-gradient(45deg, #cd3c15, #eb0303);
         color: #c8df45;
@@ -86,7 +82,6 @@
         transition: all 0.5s ease-in-out;
       }
 
-      /* Style des boutons */
       button {
         padding: 15px 40px;
         font-size: 1.3em;
@@ -124,7 +119,6 @@
         Recommencer
       </button>
     </div>
-
     <script>
       let fingers = [];
       let touchPositions = {};
@@ -141,7 +135,6 @@
           fingers = [];
           touchPositions = {};
 
-          // Ajouter chaque doigt détecté
           for (let touch of event.touches) {
             let rect = event.target.getBoundingClientRect();
             let x = touch.clientX - rect.left;
@@ -150,7 +143,6 @@
             let finger = document.createElement("div");
             finger.classList.add("finger");
 
-            // Positionner le doigt sur l'écran
             finger.style.left = `${x - 45}px`;
             finger.style.top = `${y - 45}px`;
 
@@ -158,13 +150,11 @@
             fingers.push(finger);
             touchPositions[touch.identifier] = finger;
 
-            // Après 0.3s, le cercle rétrécit légèrement
             setTimeout(() => {
               finger.classList.add("shrink");
             }, 300);
           }
 
-          // Lancer le choix après 3 secondes
           clearTimeout(selectionTimeout);
           selectionTimeout = setTimeout(chooseFingers, 1500);
         });
@@ -186,17 +176,18 @@
       function chooseFingers() {
         if (fingers.length < 2) return;
 
-        // Réinitialiser la sélection
+        // Vérification : On s'assure que les doigts sélectionnés existent encore
+        fingers = fingers.filter((f) => document.body.contains(f));
+
+        if (fingers.length < 2) return; // Annuler si les doigts ont disparu
+
         fingers.forEach((f) => f.classList.remove("chosen"));
 
-        // Sélectionner deux doigts aléatoirement
         let chosen = [];
         while (chosen.length < 2) {
           let index = Math.floor(Math.random() * fingers.length);
           if (!chosen.includes(index)) chosen.push(index);
         }
-
-        // Appliquer la classe "chosen" avec effet agrandissant
         chosen.forEach((i) => fingers[i].classList.add("chosen"));
       }
     </script>
