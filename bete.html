@@ -66,7 +66,6 @@
         position: absolute;
         transition: all 0.3s ease-in-out;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        transform: scale(1.1);
       }
 
       /* Après un court instant, le doigt rétrécit légèrement */
@@ -74,7 +73,6 @@
         width: 70px;
         height: 70px;
         line-height: 70px;
-        transform: scale(1);
       }
 
       /* Animation des doigts sélectionnés */
@@ -82,7 +80,11 @@
         background: linear-gradient(45deg, #cd3c15, #eb0303);
         color: #c8df45;
         box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
-        transform: scale(1.5);
+        width: 120px;
+        height: 120px;
+        line-height: 120px;
+        transform: scale(1.3);
+        transition: all 0.5s ease-in-out;
       }
 
       /* Style des boutons */
@@ -195,7 +197,7 @@
           if (!chosen.includes(index)) chosen.push(index);
         }
 
-        // Appliquer la classe "chosen"
+        // Appliquer la classe "chosen" avec effet agrandissant
         chosen.forEach((i) => fingers[i].classList.add("chosen"));
       }
     </script>
