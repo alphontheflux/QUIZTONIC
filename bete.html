@@ -124,37 +124,36 @@
       let touchPositions = {};
       let selectionTimeout;
 
-      // Gérer le touchstart (ajout de doigt)
+      // Gérer le touchstart (ajout de doigts)
       document
         .getElementById("fingerContainer")
         .addEventListener("touchstart", function (event) {
-          event.preventDefault(); // Empêche le scroll sur mobile
+          event.preventDefault();
 
-          // Réinitialiser la liste des doigts
-          fingers.forEach((f) => f.remove());
-          fingers = [];
-          touchPositions = {};
-
+          // Ajouter chaque nouveau doigt
           for (let touch of event.touches) {
-            let rect = event.target.getBoundingClientRect();
-            let x = touch.clientX - rect.left;
-            let y = touch.clientY - rect.top;
+            if (!touchPositions[touch.identifier]) {
+              let rect = event.target.getBoundingClientRect();
+              let x = touch.clientX - rect.left;
+              let y = touch.clientY - rect.top;
 
-            let finger = document.createElement("div");
-            finger.classList.add("finger");
+              let finger = document.createElement("div");
+              finger.classList.add("finger");
 
-            finger.style.left = `${x - 45}px`;
-            finger.style.top = `${y - 45}px`;
+              finger.style.left = `${x - 45}px`;
+              finger.style.top = `${y - 45}px`;
 
-            document.getElementById("fingerContainer").appendChild(finger);
-            fingers.push(finger);
-            touchPositions[touch.identifier] = finger;
+              document.getElementById("fingerContainer").appendChild(finger);
+              fingers.push(finger);
+              touchPositions[touch.identifier] = finger;
 
-            setTimeout(() => {
-              finger.classList.add("shrink");
-            }, 300);
+              setTimeout(() => {
+                finger.classList.add("shrink");
+              }, 300);
+            }
           }
 
+          // Démarrer le délai pour choisir les doigts
           clearTimeout(selectionTimeout);
           selectionTimeout = setTimeout(chooseFingers, 1500);
         });
@@ -171,16 +170,37 @@
               delete touchPositions[touch.identifier];
             }
           }
+
+          // Si moins de 2 doigts, annuler la sélection
+          if (fingers.length < 2) {
+            clearTimeout(selectionTimeout);
+          }
         });
 
+      // Gérer le touchmove (mouvement des doigts)
+      document
+        .getElementById("fingerContainer")
+        .addEventListener("touchmove", function (event) {
+          event.preventDefault();
+
+          for (let touch of event.touches) {
+            let finger = touchPositions[touch.identifier];
+            if (finger) {
+              let rect = event.target.getBoundingClientRect();
+              let x = touch.clientX - rect.left;
+              let y = touch.clientY - rect.top;
+
+              finger.style.left = `${x - 45}px`;
+              finger.style.top = `${y - 45}px`;
+            }
+          }
+        });
+
+      // Fonction pour choisir deux doigts au hasard
       function chooseFingers() {
         if (fingers.length < 2) return;
 
-        // Vérification : On s'assure que les doigts sélectionnés existent encore
-        fingers = fingers.filter((f) => document.body.contains(f));
-
-        if (fingers.length < 2) return; // Annuler si les doigts ont disparu
-
+        // Réinitialiser les doigts sélectionnés
         fingers.forEach((f) => f.classList.remove("chosen"));
 
         let chosen = [];
@@ -188,6 +208,8 @@
           let index = Math.floor(Math.random() * fingers.length);
           if (!chosen.includes(index)) chosen.push(index);
         }
+
+        // Appliquer l'effet "chosen" aux doigts sélectionnés
         chosen.forEach((i) => fingers[i].classList.add("chosen"));
       }
     </script>
