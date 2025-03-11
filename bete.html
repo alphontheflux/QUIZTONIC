@@ -8,8 +8,8 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
     />
-
     <style>
+      /* Style global */
       body {
         font-family: "Poppins", sans-serif;
         margin: 0;
@@ -50,7 +50,7 @@
         flex-wrap: wrap;
         gap: 15px;
         margin-bottom: 40px;
-        touch-action: none; /* Désactive le zoom avec les doigts */
+        touch-action: none;
       }
 
       /* Style des éléments "doigts" */
@@ -64,35 +64,17 @@
         border-radius: 50%;
         font-size: 22px;
         position: absolute;
-        transition: transform 0.2s ease-in-out, background-color 0.3s ease,
-          box-shadow 0.3s ease;
+        transition: transform 0.5s ease, background-color 0.5s ease,
+          box-shadow 0.5s ease;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       }
 
-      .finger:hover {
-        transform: scale(1.2);
-        cursor: pointer;
-      }
-
+      /* Animation des doigts sélectionnés */
       .chosen {
-        color: #c8df45;
-        background-color: #e60000;
-        box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
-        animation: pulse 1s infinite;
         background: linear-gradient(45deg, #cd3c15, #eb0303);
-      }
-
-      /* Animation de pulsation */
-      @keyframes pulse {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.1);
-        }
-        100% {
-          transform: scale(1);
-        }
+        color: #c8df45;
+        box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+        transform: scale(1.5);
       }
 
       /* Style des boutons */
@@ -116,11 +98,6 @@
         transform: scale(1.05);
       }
 
-      button:active {
-        transform: scale(1);
-      }
-
-      /* Style du bouton "Recommencer" */
       .refresh-button {
         background-color: #4caf50;
       }
@@ -132,9 +109,8 @@
   </head>
   <body>
     <div>
-      <h1>Quiz Toniccc</h1>
+      <h1>Quiz Tonic</h1>
       <div id="fingerContainer"></div>
-      <button onclick="chooseFingers()">Choisir</button>
       <button class="refresh-button" onclick="window.location.reload();">
         Recommencer
       </button>
@@ -142,45 +118,69 @@
 
     <script>
       let fingers = [];
+      let touchPositions = {};
+      let selectionTimeout;
 
+      // Gérer le touchstart (ajout de doigt)
       document
         .getElementById("fingerContainer")
         .addEventListener("touchstart", function (event) {
           event.preventDefault(); // Empêche le scroll sur mobile
 
-          if (fingers.length >= 10) return;
+          // Réinitialiser la liste des doigts
+          fingers.forEach((f) => f.remove());
+          fingers = [];
+          touchPositions = {};
 
+          // Ajouter chaque doigt détecté
           for (let touch of event.touches) {
             let rect = event.target.getBoundingClientRect();
             let x = touch.clientX - rect.left;
             let y = touch.clientY - rect.top;
 
-            addFinger(x, y);
+            let finger = document.createElement("div");
+            finger.classList.add("finger");
+            finger.style.left = `${x - 35}px`;
+            finger.style.top = `${y - 35}px`;
+
+            document.getElementById("fingerContainer").appendChild(finger);
+            fingers.push(finger);
+            touchPositions[touch.identifier] = finger;
           }
+
+          // Lancer le choix après 3 secondes
+          clearTimeout(selectionTimeout);
+          selectionTimeout = setTimeout(chooseFingers, 3000);
         });
 
-      function addFinger(x, y) {
-        let finger = document.createElement("div");
-        finger.classList.add("finger");
-        finger.style.left = `${x - 35}px`;
-        finger.style.top = `${y - 35}px`;
-
-        finger.innerText = fingers.length + 1;
-        document.getElementById("fingerContainer").appendChild(finger);
-        fingers.push(finger);
-      }
+      // Gérer le touchend (retrait d'un doigt)
+      document
+        .getElementById("fingerContainer")
+        .addEventListener("touchend", function (event) {
+          for (let touch of event.changedTouches) {
+            let finger = touchPositions[touch.identifier];
+            if (finger) {
+              finger.remove();
+              fingers = fingers.filter((f) => f !== finger);
+              delete touchPositions[touch.identifier];
+            }
+          }
+        });
 
       function chooseFingers() {
         if (fingers.length < 2) return;
 
+        // Réinitialiser la sélection
         fingers.forEach((f) => f.classList.remove("chosen"));
 
+        // Sélectionner deux doigts aléatoirement
         let chosen = [];
         while (chosen.length < 2) {
           let index = Math.floor(Math.random() * fingers.length);
           if (!chosen.includes(index)) chosen.push(index);
         }
 
+        // Appliquer la classe "chosen"
         chosen.forEach((i) => fingers[i].classList.add("chosen"));
       }
     </script>
