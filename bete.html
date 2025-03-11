@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz Tonic</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/style/acceuil.css" />
+  </head>
+  <body>
+    <div>
+      <h1>Quiz Tonic</h1>
+      <div id="fingerContainer"></div>
+      <button onclick="chooseFingers()">Choisir</button>
+      <button class="refresh-button" onclick="window.location.reload();">
+        Recommencer
+      </button>
+    </div>
+
+    <script>
+      let fingers = [];
+
+      document
+        .getElementById("fingerContainer")
+        .addEventListener("click", function (event) {
+          if (fingers.length >= 10) return;
+
+          let finger = document.createElement("div");
+          finger.classList.add("finger");
+
+          let x = event.offsetX;
+          let y = event.offsetY;
+
+          finger.style.left = `${x - finger.offsetWidth / 2}px`;
+          finger.style.top = `${y - finger.offsetHeight / 2}px`;
+
+          finger.innerText = fingers.length + 1;
+          document.getElementById("fingerContainer").appendChild(finger);
+          fingers.push(finger);
+        });
+
+      function chooseFingers() {
+        if (fingers.length < 2) return;
+
+        fingers.forEach((f) => f.classList.remove("chosen"));
+
+        let chosen = [];
+        while (chosen.length < 2) {
+          let index = Math.floor(Math.random() * fingers.length);
+          if (!chosen.includes(index)) chosen.push(index);
+        }
+
+        chosen.forEach((i) => fingers[i].classList.add("chosen"));
+      }
+    </script>
+  </body>
+</html>
