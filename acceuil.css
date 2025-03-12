@@ -1,13 +1,13 @@
+/* 🌆 Fond d'écran */
 body {
     height: 100vh;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url('/style/image/fond.jpg') no-repeat center center;
+    background: url('/style/image/fond.jpg')no-repeat  center;
     background-size: cover;
 }
-
 
 
 .container {
@@ -25,24 +25,67 @@ body {
 
 @media (min-width: 1024px) {
     body {
-        background-size: contain; 
-        background-color: black; 
+        background-size: contain;
+        background-color: black;
     }
 }
+
 
 .boutton-conteneur button {
     font-size: 25px;
     padding: 20px 30px;
-    border: 2px solid black; 
+    border: 2px solid black;
     border-radius: 8px;
-    background-color: transparent; 
-    color: black; 
+    background-color: transparent;
+    color: black;
     cursor: pointer;
     transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
     font-weight: bold;
 }
 
 .boutton-conteneur button:hover {
-    background-color: rgba(0, 0, 0, 0.1); 
-    transform: scale(1.05); 
+    background-color: rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
 }
+
+
+#video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+
+#intro-video {
+    max-width: 100vw;
+    max-height: 100vh;
+    object-fit: contain;  
+}
+
+
+.hidden {
+    display: none;
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}
+
+.hidden {
+    display: none;
+}
+
+#main-content {
+    opacity: 0;
+    transition: opacity 1s ease-in;
+}
+
