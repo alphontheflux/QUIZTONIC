@@ -1,0 +1,28 @@
+body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #64398e, #563889, #2b426e);
+}
+
+.container {
+    text-align: center;
+}
+
+.boutton-conteneur button {
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.boutton-conteneur button:hover {
+    background-color: #f0f0f0;
+}
+
