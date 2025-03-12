@@ -4,14 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/acceuil.css">
-    <script src="/activite.js" defer></script>
+    <script src="/acceuil.js" defer></script>
     <title>Accueil</title>
 </head>
 <body>
+    <div id="video-container">
+      <video id="intro-video" autoplay muted>
+        <source src="/style/image/game tonic animé.mp4" type="video/mp4">
+        Votre navigateur ne supporte pas les vidéos.
+      </video>
+    </div>
   
-  <div class="container">
-      <div class="boutton-conteneur">
+    <div id="main-content" class="hidden">
+      <div class="container">
+        <div class="boutton-conteneur">
           <button>Jouer</button>
+        </div>
       </div>
-  </div>
-</body>
+    </div>
+  </body>
+  
