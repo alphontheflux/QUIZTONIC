@@ -90,4 +90,3 @@ function chooseFingers() {
   // Appliquer l'effet "chosen" aux doigts sélectionnés
   chosen.forEach((i) => fingers[i].classList.add("chosen"));
 }
- simplifie le code pour que quand on bouge le doigt ca suive pas le mouvement pour éviter les bugs
