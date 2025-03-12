@@ -44,21 +44,6 @@ const activité2 = [
   "Changer de chaussures",
 ];
 
-const activité = [activité1, activité2, activitémax];
-
-function doigt(activite) {
-  for (let i = 0; i < activité.length; i++) {
-    if (activité[i].includes(activite)) {
-      return i;
-    }
-  }
-  return -1;
-}
-
-console.log(doigt("telephone arabe"));
-console.log(doigt("concours de regard"));
-console.log(doigt("traverse la salle les yeux bander"));
-
 const malus = [
   "imite l'accent belge pendant 4 tours",
   "imite l'accent quebeqois pendant 3 tours",
