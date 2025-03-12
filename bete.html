@@ -33,13 +33,15 @@
         letter-spacing: 3px;
       }
 
+      /* Zone de toucher qui prend tout l'écran */
       #fingerContainer {
-        position: relative;
-        width: 90%;
-        max-width: 800px;
-        height: 50vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         background: rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
+        border-radius: 0;
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
         overflow: hidden;
         display: flex;
@@ -47,7 +49,6 @@
         align-items: center;
         flex-wrap: wrap;
         gap: 15px;
-        margin-bottom: 40px;
         touch-action: none;
       }
 
@@ -92,7 +93,10 @@
         cursor: pointer;
         font-weight: 700;
         transition: all 0.3s ease;
-        margin-top: 20px;
+        position: absolute;
+        bottom: 20px; /* Placer le bouton au bas de l'écran */
+        left: 50%;
+        transform: translateX(-50%);
         text-transform: uppercase;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       }
