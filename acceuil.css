@@ -4,25 +4,45 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: radial-gradient(circle, #64398e, #563889, #2b426e);
+    background: url('/style/image/fond.jpg') no-repeat center center;
+    background-size: cover;
 }
+
+
 
 .container {
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    top: 5%;
+}
+
+
+@media (min-width: 1024px) {
+    body {
+        background-size: contain; 
+        background-color: black; 
+    }
 }
 
 .boutton-conteneur button {
-    padding: 10px 20px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    background-color: #ffffff;
-    color: #333;
+    font-size: 25px;
+    padding: 20px 30px;
+    border: 2px solid black; 
+    border-radius: 8px;
+    background-color: transparent; 
+    color: black; 
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    font-weight: bold;
 }
 
 .boutton-conteneur button:hover {
-    background-color: #f0f0f0;
+    background-color: rgba(0, 0, 0, 0.1); 
+    transform: scale(1.05); 
 }
-

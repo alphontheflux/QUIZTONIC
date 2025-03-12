@@ -121,52 +121,6 @@
     </div>
 
     <script>
-      const activitémax = [
-        "telephone arabe",
-        "figure accrosport",
-        "As tu déjà ri du malheur de quelqu'un ?",
-        "As tu déjà vomis dans un lieu public ?",
-        "Meilleur anecdote de soirée",
-        "Meilleur anecdote au bassin a flot",
-        "Meilleur anecdote avec un bureau",
-        "Meilleur anecdote avec un vélo",
-        "Meilleur anecdote avec un bateau",
-      ];
-
-      const activité1 = [
-        "roulade",
-        "pompe à une main",
-        "fait le poirier",
-        "pictionnary ",
-        "invente une danse",
-        "raconte une histoire avec une voix aigue",
-        "speech sur un objet banal",
-        "présente la météo",
-        "envoie un selfi ridicule à tes parents",
-        "essaye de faire un tour de magie",
-        "karaoké",
-        "imite une personne autour de toi",
-        "Quelle est ton talent chaché",
-        "Quelle est le plat que tu as raté en cuisine",
-        "Quelle est le cadeau le plus bizarre que tu es reçu",
-        "Quelle est la pire mode que tu est suivi",
-        "traverse la salle les yeux bander",
-      ];
-
-      const activité2 = [
-        "invente ta rencontre avec une personne",
-        "decris quelqu'un en 3 adjectif",
-        "pompe avec une personne sur le dos",
-        "course de chaise",
-        "course de brouette",
-        "concours de regard",
-        "lire les message avec une personne",
-        "fais une chason sur une personne",
-        "reproduit la scene du titanic",
-        "reproduit le portée de Dirty Dancing",
-        "Changer de chaussures",
-      ];
-
       let fingers = [];
       let touchPositions = {};
       let selectionTimeout;
@@ -175,8 +129,6 @@
         .getElementById("fingerContainer")
         .addEventListener("touchstart", function (event) {
           event.preventDefault();
-
-          // Supprime les éléments existants
           fingers.forEach((f) => f.remove());
           fingers = [];
           touchPositions = {};
@@ -201,9 +153,7 @@
           }
 
           clearTimeout(selectionTimeout);
-          if (fingers.length >= 1) {
-            selectionTimeout = setTimeout(chooseFingers, 1500);
-          }
+          selectionTimeout = setTimeout(chooseFingers, 1500);
         });
 
       document
@@ -220,43 +170,17 @@
         });
 
       function chooseFingers() {
-        if (fingers.length === 0) return;
-
-        let phrase = choisirPhrase();
-        let nombreDoigts = doigt(phrase);
-
-        console.log(`Phrase choisie : ${phrase}`);
-        console.log(`Nombre de doigts sélectionnés : ${nombreDoigts}`);
+        if (fingers.length < 2) return;
 
         fingers.forEach((f) => f.classList.remove("chosen"));
 
         let chosen = [];
-        if (nombreDoigts === fingers.length) {
-          chosen = fingers.map((_, index) => index);
-        } else {
-          while (
-            chosen.length < nombreDoigts &&
-            chosen.length < fingers.length
-          ) {
-            let index = Math.floor(Math.random() * fingers.length);
-            if (!chosen.includes(index)) chosen.push(index);
-          }
+        while (chosen.length < 2) {
+          let index = Math.floor(Math.random() * fingers.length);
+          if (!chosen.includes(index)) chosen.push(index);
         }
 
         chosen.forEach((i) => fingers[i].classList.add("chosen"));
-      }
-
-      function choisirPhrase() {
-        let allActivities = [...activitémax, ...activité1, ...activité2];
-        let randomIndex = Math.floor(Math.random() * allActivities.length);
-        return allActivities[randomIndex];
-      }
-
-      function doigt(activite) {
-        if (activitémax.includes(activite)) return fingers.length; // Tous les doigts
-        if (activité1.includes(activite)) return 1; // 1 doigt
-        if (activité2.includes(activite)) return 2; // 2 doigts
-        return -1;
       }
     </script>
   </body>
