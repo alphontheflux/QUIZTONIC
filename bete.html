@@ -64,6 +64,7 @@
         position: absolute;
         transition: all 0.3s ease-in-out;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        z-index: 10;
       }
 
       .finger.shrink {
@@ -83,6 +84,21 @@
         transition: all 0.5s ease-in-out;
       }
 
+      #selectedActivity {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.7);
+        padding: 15px 30px;
+        border-radius: 10px;
+        font-size: 1.5em;
+        text-align: center;
+        max-width: 80%;
+        z-index: 100;
+        display: none;
+      }
+
       button {
         padding: 15px 40px;
         font-size: 1.3em;
@@ -99,11 +115,12 @@
         transform: translateX(-50%);
         text-transform: uppercase;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        z-index: 20;
       }
 
       button:hover {
         background-color: #ff4081;
-        transform: scale(1.05);
+        transform: translateX(-50%) scale(1.05);
       }
 
       .refresh-button {
@@ -118,6 +135,7 @@
   <body>
     <div>
       <h1>Quiz Tonic</h1>
+      <div id="selectedActivity"></div>
       <div id="fingerContainer"></div>
       <button class="refresh-button" onclick="window.location.reload();">
         Recommencer
@@ -171,69 +189,123 @@
         "Changer de chaussures",
       ];
 
-      let fingers = [];
-      let touchPositions = {};
+      // Utilisation d'une Map pour stocker les éléments de doigt avec leur identifiant
+      const touchMap = new Map();
       let selectionTimeout;
+      let selectionActive = false;
+      const activityDisplay = document.getElementById("selectedActivity");
+      const fingerContainer = document.getElementById("fingerContainer");
 
-      document
-        .getElementById("fingerContainer")
-        .addEventListener("touchstart", function (event) {
-          event.preventDefault();
+      // Ajout d'un gestionnaire pour empêcher le défilement par défaut
+      fingerContainer.addEventListener(
+        "touchmove",
+        function (e) {
+          e.preventDefault();
+        },
+        { passive: false }
+      );
 
-          // Traiter chaque doigt qui touche l'écran
-          Array.from(event.touches).forEach((touch) => {
-            if (!touchPositions[touch.identifier]) {
-              let rect = event.target.getBoundingClientRect();
-              let x = touch.clientX - rect.left;
-              let y = touch.clientY - rect.top;
+      fingerContainer.addEventListener("touchstart", handleTouchStart);
+      fingerContainer.addEventListener("touchend", handleTouchEnd);
+      fingerContainer.addEventListener("touchcancel", handleTouchEnd);
 
-              let finger = document.createElement("div");
-              finger.classList.add("finger");
-              finger.style.left = `${x - 45}px`;
-              finger.style.top = `${y - 45}px`;
+      function handleTouchStart(event) {
+        event.preventDefault();
 
-              document.getElementById("fingerContainer").appendChild(finger);
-              touchPositions[touch.identifier] = finger;
-              fingers.push(finger);
-            }
-          });
+        // Reset la sélection si une nouvelle séquence commence
+        if (touchMap.size === 0) {
+          resetSelection();
+        }
 
-          // Supprimer la sélection après un délai
+        // Ajouter chaque nouveau doigt
+        Array.from(event.changedTouches).forEach((touch) => {
+          if (!touchMap.has(touch.identifier)) {
+            let rect = fingerContainer.getBoundingClientRect();
+            let x = touch.clientX - rect.left;
+            let y = touch.clientY - rect.top;
+
+            let finger = document.createElement("div");
+            finger.classList.add("finger");
+            finger.dataset.id = touch.identifier;
+            finger.style.left = `${x - 60}px`; // Centrer sur le doigt
+            finger.style.top = `${y - 60}px`;
+
+            fingerContainer.appendChild(finger);
+            touchMap.set(touch.identifier, finger);
+          }
+        });
+
+        // Ne démarrer le timer que si au moins un doigt est posé
+        if (touchMap.size > 0 && !selectionActive) {
           clearTimeout(selectionTimeout);
           selectionTimeout = setTimeout(chooseFingers, 1500);
+        }
+      }
+
+      function handleTouchEnd(event) {
+        event.preventDefault();
+
+        // Supprimer uniquement les doigts qui ont été relevés
+        Array.from(event.changedTouches).forEach((touch) => {
+          if (touchMap.has(touch.identifier)) {
+            let finger = touchMap.get(touch.identifier);
+            if (finger && fingerContainer.contains(finger)) {
+              fingerContainer.removeChild(finger);
+            }
+            touchMap.delete(touch.identifier);
+          }
         });
 
-      document
-        .getElementById("fingerContainer")
-        .addEventListener("touchend", function (event) {
-          Array.from(event.changedTouches).forEach((touch) => {
-            let finger = touchPositions[touch.identifier];
-            if (finger) {
-              finger.remove();
-              fingers = fingers.filter((f) => f !== finger);
-              delete touchPositions[touch.identifier];
-            }
-          });
+        // Si tous les doigts sont relevés et qu'une sélection est active, reset après 3 secondes
+        if (touchMap.size === 0 && selectionActive) {
+          setTimeout(resetSelection, 3000);
+        }
+      }
+
+      function resetSelection() {
+        selectionActive = false;
+        activityDisplay.style.display = "none";
+
+        // Supprimer tous les éléments de doigt restants
+        touchMap.forEach((finger) => {
+          if (fingerContainer.contains(finger)) {
+            fingerContainer.removeChild(finger);
+          }
         });
+
+        touchMap.clear();
+        clearTimeout(selectionTimeout);
+      }
 
       function chooseFingers() {
-        if (fingers.length === 0) return;
+        if (touchMap.size === 0) return;
 
-        let phrase = choisirPhrase();
-        let nombreDoigts = doigt(phrase);
+        selectionActive = true;
 
-        console.log(`Phrase choisie : ${phrase}`);
-        console.log(`Nombre de doigts sélectionnés : ${nombreDoigts}`);
+        // Convertir la Map en tableau pour la sélection aléatoire
+        const fingerElements = Array.from(touchMap.values());
+        const phrase = choisirPhrase();
+        const nombreDoigts = doigt(phrase);
 
-        fingers.forEach((f) => f.classList.remove("chosen"));
+        // Afficher l'activité sélectionnée
+        activityDisplay.textContent = phrase;
+        activityDisplay.style.display = "block";
 
-        let chosen = [];
-        while (chosen.length < nombreDoigts && chosen.length < fingers.length) {
-          let index = Math.floor(Math.random() * fingers.length);
+        // Retirer la classe 'chosen' de tous les doigts
+        fingerElements.forEach((f) => f.classList.remove("chosen"));
+
+        // Sélectionner aléatoirement le nombre requis de doigts
+        const chosen = [];
+        while (
+          chosen.length < nombreDoigts &&
+          chosen.length < fingerElements.length
+        ) {
+          let index = Math.floor(Math.random() * fingerElements.length);
           if (!chosen.includes(index)) chosen.push(index);
         }
 
-        chosen.forEach((i) => fingers[i].classList.add("chosen"));
+        // Appliquer la classe 'chosen' aux doigts sélectionnés
+        chosen.forEach((i) => fingerElements[i].classList.add("chosen"));
       }
 
       function choisirPhrase() {
@@ -243,10 +315,10 @@
       }
 
       function doigt(activite) {
-        if (activitémax.includes(activite)) return fingers.length;
-        if (activité1.includes(activite)) return 1;
-        if (activité2.includes(activite)) return 2;
-        return -1;
+        if (activitémax.includes(activite)) return touchMap.size; // Tous les doigts
+        if (activité1.includes(activite)) return 1; // Un seul doigt
+        if (activité2.includes(activite)) return 2; // Deux doigts
+        return 1; // Par défaut, sélectionner un doigt
       }
     </script>
   </body>
