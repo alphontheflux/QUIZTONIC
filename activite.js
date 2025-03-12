@@ -44,16 +44,16 @@ const activité2 = [
   "Changer de chaussures",
 ];
 
-const activité = [activité1, activité2, activitémax];
+const activites = [activité1, activité2, activitémax];
 
 function doigt(activite) {
-  for (let i = 0; i < activité.length; i++) {
-    if (activité[i].includes(activite)) {
+  for (let i = 0; i < activites.length; i++) {
+    if (activites[i].includes(activite)) {
       return i;
     }
   }
-  return -1;
 }
+
 
 console.log(doigt("telephone arabe"));
 console.log(doigt("concours de regard"));
