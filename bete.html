@@ -180,8 +180,8 @@
         .addEventListener("touchstart", function (event) {
           event.preventDefault();
 
-          // Créer un tableau pour chaque touche distincte
-          for (let touch of event.touches) {
+          // Traiter chaque doigt qui touche l'écran
+          Array.from(event.touches).forEach((touch) => {
             if (!touchPositions[touch.identifier]) {
               let rect = event.target.getBoundingClientRect();
               let x = touch.clientX - rect.left;
@@ -196,9 +196,9 @@
               touchPositions[touch.identifier] = finger;
               fingers.push(finger);
             }
-          }
+          });
 
-          // Supprimer la sélection après un délai si plusieurs touches sont présentes
+          // Supprimer la sélection après un délai
           clearTimeout(selectionTimeout);
           selectionTimeout = setTimeout(chooseFingers, 1500);
         });
@@ -206,14 +206,14 @@
       document
         .getElementById("fingerContainer")
         .addEventListener("touchend", function (event) {
-          for (let touch of event.changedTouches) {
+          Array.from(event.changedTouches).forEach((touch) => {
             let finger = touchPositions[touch.identifier];
             if (finger) {
               finger.remove();
               fingers = fingers.filter((f) => f !== finger);
               delete touchPositions[touch.identifier];
             }
-          }
+          });
         });
 
       function chooseFingers() {
@@ -228,16 +228,9 @@
         fingers.forEach((f) => f.classList.remove("chosen"));
 
         let chosen = [];
-        if (nombreDoigts === fingers.length) {
-          chosen = fingers.map((_, index) => index);
-        } else {
-          while (
-            chosen.length < nombreDoigts &&
-            chosen.length < fingers.length
-          ) {
-            let index = Math.floor(Math.random() * fingers.length);
-            if (!chosen.includes(index)) chosen.push(index);
-          }
+        while (chosen.length < nombreDoigts && chosen.length < fingers.length) {
+          let index = Math.floor(Math.random() * fingers.length);
+          if (!chosen.includes(index)) chosen.push(index);
         }
 
         chosen.forEach((i) => fingers[i].classList.add("chosen"));
