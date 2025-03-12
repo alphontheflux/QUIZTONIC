@@ -180,30 +180,27 @@
         .addEventListener("touchstart", function (event) {
           event.preventDefault();
 
-          // Supprime les éléments existants
-          fingers.forEach((f) => f.remove());
-          fingers = [];
-          touchPositions = {};
-
+          // Créer un tableau pour chaque touche distincte
           for (let touch of event.touches) {
-            let rect = event.target.getBoundingClientRect();
-            let x = touch.clientX - rect.left;
-            let y = touch.clientY - rect.top;
+            if (!touchPositions[touch.identifier]) {
+              let rect = event.target.getBoundingClientRect();
+              let x = touch.clientX - rect.left;
+              let y = touch.clientY - rect.top;
 
-            let finger = document.createElement("div");
-            finger.classList.add("finger");
-            finger.style.left = `${x - 45}px`;
-            finger.style.top = `${y - 45}px`;
+              let finger = document.createElement("div");
+              finger.classList.add("finger");
+              finger.style.left = `${x - 45}px`;
+              finger.style.top = `${y - 45}px`;
 
-            document.getElementById("fingerContainer").appendChild(finger);
-            fingers.push(finger);
-            touchPositions[touch.identifier] = finger;
+              document.getElementById("fingerContainer").appendChild(finger);
+              touchPositions[touch.identifier] = finger;
+              fingers.push(finger);
+            }
           }
 
+          // Supprimer la sélection après un délai si plusieurs touches sont présentes
           clearTimeout(selectionTimeout);
-          if (fingers.length >= 1) {
-            selectionTimeout = setTimeout(chooseFingers, 1500);
-          }
+          selectionTimeout = setTimeout(chooseFingers, 1500);
         });
 
       document
