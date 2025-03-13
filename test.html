@@ -4,10 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Duel Instantané</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
       body {
-        font-family: Arial, sans-serif;
-        background: black;
+        font-family: "Poppins", sans-serif;
+        background: #222;
         color: white;
         text-align: center;
         display: flex;
@@ -15,88 +19,105 @@
         align-items: center;
         justify-content: center;
         height: 100vh;
-        overflow: hidden;
       }
-      #gameArea {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
+      h1 {
+        font-size: 2em;
       }
-      .finger {
-        width: 100px;
-        height: 100px;
-        background: red;
-        position: absolute;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        font-weight: bold;
+      #playersList,
+      #duelArea,
+      #scores {
+        margin-top: 20px;
       }
-      .chosen {
-        background: gold;
-        transform: scale(1.2);
+      .button {
+        padding: 10px 20px;
+        margin-top: 10px;
+        background: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
       }
     </style>
   </head>
   <body>
     <h1>Duel Instantané</h1>
-    <p>Touchez l’écran pour participer</p>
-    <div id="gameArea"></div>
-    <div id="challenge"></div>
-
+    <div id="playersList">
+      <input type="text" id="playerName" placeholder="Entrez votre nom" />
+      <button class="button" onclick="addPlayer()">Ajouter Joueur</button>
+      <p>Joueurs : <span id="players"></span></p>
+    </div>
+    <div id="duelArea" style="display: none">
+      <h2>
+        Duel entre <span id="player1"></span> et <span id="player2"></span>
+      </h2>
+      <p id="challenge"></p>
+      <button class="button" onclick="declareWinner(1)">
+        Victoire <span id="winner1"></span>
+      </button>
+      <button class="button" onclick="declareWinner(2)">
+        Victoire <span id="winner2"></span>
+      </button>
+    </div>
+    <div id="scores">
+      <h2>Scores</h2>
+      <ul id="scoreList"></ul>
+    </div>
+    <button class="button" onclick="startDuel()">Lancer un Duel</button>
     <script>
       let players = [];
-      let gameArea = document.getElementById("gameArea");
-      let challengeDisplay = document.getElementById("challenge");
+      let scores = {};
       let challenges = [
-        "Le premier qui tape le bouton rouge gagne !",
-        "Le premier qui trouve un objet bleu gagne !",
-        "Pierre-Feuille-Ciseaux en 3 secondes !",
-        "Ne clignez pas des yeux, duel de regard !",
-        "Le premier qui dit son prénom perd !",
+        "Toucher le bouton le plus vite !",
+        "Nommer 3 animaux rapidement !",
+        "Imiter une célébrité !",
+        "Dire un virelangue sans se tromper !",
       ];
 
-      gameArea.addEventListener("touchstart", (event) => {
-        event.preventDefault();
-        players = [];
-        gameArea.innerHTML = "";
-
-        for (let touch of event.touches) {
-          let x = touch.clientX;
-          let y = touch.clientY;
-          let finger = document.createElement("div");
-          finger.classList.add("finger");
-          finger.style.left = `${x - 50}px`;
-          finger.style.top = `${y - 50}px`;
-          gameArea.appendChild(finger);
-          players.push(finger);
+      function addPlayer() {
+        let name = document.getElementById("playerName").value;
+        if (name && !players.includes(name)) {
+          players.push(name);
+          scores[name] = 0;
+          updatePlayersList();
         }
-        if (players.length >= 2) {
-          setTimeout(selectDuelists, 1500);
-        }
-      });
-
-      function selectDuelists() {
-        if (players.length < 2) return;
-        let duelists = [];
-        while (duelists.length < 2) {
-          let index = Math.floor(Math.random() * players.length);
-          if (!duelists.includes(players[index])) {
-            duelists.push(players[index]);
-          }
-        }
-        duelists.forEach((f) => f.classList.add("chosen"));
-        startChallenge();
       }
 
-      function startChallenge() {
-        let challenge =
+      function updatePlayersList() {
+        document.getElementById("players").textContent = players.join(", ");
+        updateScores();
+      }
+
+      function startDuel() {
+        if (players.length < 2) {
+          alert("Ajoutez au moins deux joueurs");
+          return;
+        }
+        let [p1, p2] = players.sort(() => 0.5 - Math.random()).slice(0, 2);
+        document.getElementById("player1").textContent = p1;
+        document.getElementById("player2").textContent = p2;
+        document.getElementById("winner1").textContent = p1;
+        document.getElementById("winner2").textContent = p2;
+        document.getElementById("challenge").textContent =
           challenges[Math.floor(Math.random() * challenges.length)];
-        challengeDisplay.innerHTML = `<h2>${challenge}</h2>`;
+        document.getElementById("duelArea").style.display = "block";
+      }
+
+      function declareWinner(playerNumber) {
+        let winner = document.getElementById(
+          "player" + playerNumber
+        ).textContent;
+        scores[winner] += 1;
+        updateScores();
+        document.getElementById("duelArea").style.display = "none";
+      }
+
+      function updateScores() {
+        let scoreList = document.getElementById("scoreList");
+        scoreList.innerHTML = "";
+        for (let player in scores) {
+          let li = document.createElement("li");
+          li.textContent = `${player}: ${scores[player]} points`;
+          scoreList.appendChild(li);
+        }
       }
     </script>
   </body>
