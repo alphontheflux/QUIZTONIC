@@ -111,23 +111,26 @@
         background-color: #45a049;
       }
 
-      /* Bouton plein écran */
+      /* Bouton plein écran en bas à droite */
       .fullscreen-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        padding: 10px 15px;
-        font-size: 1em;
-        background-color: #222;
+        position: fixed;
+        bottom: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(34, 34, 34, 0.8);
         border: none;
-        border-radius: 5px;
+        border-radius: 50%;
         color: white;
         cursor: pointer;
-        font-weight: 700;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .fullscreen-button:hover {
-        background-color: #444;
+        background-color: rgba(68, 68, 68, 0.9);
       }
     </style>
   </head>
@@ -137,9 +140,7 @@
     <button class="refresh-button" onclick="window.location.reload();">
       Recommencer
     </button>
-    <button class="fullscreen-button" onclick="toggleFullscreen()">
-      🔲 Plein écran
-    </button>
+    <button class="fullscreen-button" onclick="toggleFullscreen()">🔲</button>
 
     <script>
       function toggleFullscreen() {
