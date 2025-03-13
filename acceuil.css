@@ -15,7 +15,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 90%;
+    width: 100%;
     max-width: 500px;
     position: relative;
     top: 5%;
@@ -29,12 +29,11 @@ body {
     }
 }
 
-/* Boutons stylisés */
 .boutton-conteneur button {
     font-size: 25px;
     margin-top: 70px;
-    padding: 20px 30px;
-    border: 2px solid black;
+    padding: 25px 50px;
+    border: 3px solid black;
     border-radius: 8px;
     background-color: transparent;
     color: black;
