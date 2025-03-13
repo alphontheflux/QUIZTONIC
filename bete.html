@@ -259,6 +259,34 @@
         chosenActivityDiv.style.opacity = "1";
         chosenActivityDiv.style.transform = "translate(-50%, 0)";
       }
+      // Vérifie si la page était en plein écran avant le refresh
+      window.onload = function () {
+        if (localStorage.getItem("fullscreen") === "true") {
+          document.documentElement.requestFullscreen();
+        }
+      };
+
+      // Fonction pour activer/désactiver le plein écran
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+          localStorage.setItem("fullscreen", "true"); // Sauvegarde l'état plein écran
+        } else {
+          document.exitFullscreen();
+          localStorage.setItem("fullscreen", "false"); // Désactive le stockage du mode plein écran
+        }
+      }
+
+      // Modifier le bouton refresh pour sauvegarder l'état avant reload
+      document
+        .querySelector(".refresh-button")
+        .addEventListener("click", function () {
+          localStorage.setItem(
+            "fullscreen",
+            document.fullscreenElement ? "true" : "false"
+          );
+          location.reload();
+        });
     </script>
   </body>
 </html>
