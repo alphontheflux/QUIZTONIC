@@ -27,42 +27,12 @@
       }
 
       h1 {
-        font-size: 3.5em;
+        font-size: 3em;
         font-weight: 700;
         text-transform: uppercase;
         text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
-        margin-top: 50px;
+        margin-top: 80px;
         letter-spacing: 3px;
-        color: #fff;
-        animation: pulse 2s infinite;
-      }
-
-      @keyframes pulse {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.05);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      #instructions {
-        position: fixed;
-        top: 22%;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80%;
-        max-width: 800px;
-        font-size: 1.2em;
-        background: rgba(0, 0, 0, 0.6);
-        padding: 15px;
-        border-radius: 10px;
-        opacity: 1;
-        margin-bottom: 20px;
-        transition: opacity 0.5s ease-in-out;
       }
 
       #chosenActivity {
@@ -80,6 +50,7 @@
         opacity: 1;
         transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         z-index: 9999;
+        pointer-events: none;
       }
 
       #fingerContainer {
@@ -99,150 +70,69 @@
         background: linear-gradient(45deg, #ff5f6d, #ffc3a0);
         color: white;
         text-align: center;
-        line-height: 120px;
+        line-height: 90px;
         border-radius: 50%;
-        font-size: 30px;
+        font-size: 24px;
         position: absolute;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s ease, background 0.3s ease,
-          box-shadow 0.3s ease;
       }
 
       .chosen {
         background: linear-gradient(45deg, #cd3c15, #917c7c);
         color: #c8df45;
-        box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+        box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
         transform: scale(1.3);
-        animation: glow 1s infinite alternate;
       }
 
-      @keyframes glow {
-        from {
-          box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-        }
-        to {
-          box-shadow: 0 0 30px rgba(255, 215, 0, 0.9);
-        }
-      }
-
-      .button-container {
+      /* Boutons en bas à droite */
+      .fullscreen-button,
+      .refresh-button {
         position: fixed;
         bottom: 15px;
-        right: 15px;
-        display: flex;
-        gap: 10px;
-      }
-
-      .fullscreen-button,
-      .refresh-button,
-      .category-button {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         border: none;
         border-radius: 50%;
         color: white;
         cursor: pointer;
-        font-size: 24px;
+        font-size: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: transform 0.2s, background-color 0.2s;
       }
 
+      /* Bouton plein écran */
       .fullscreen-button {
+        right: 15px;
         background-color: rgba(34, 34, 34, 0.8);
       }
 
       .fullscreen-button:hover {
         background-color: rgba(68, 68, 68, 0.9);
-        transform: scale(1.1);
       }
 
+      /* Bouton refresh */
       .refresh-button {
+        right: 65px;
         background-color: rgba(76, 175, 80, 0.8);
       }
 
       .refresh-button:hover {
         background-color: rgba(69, 160, 73, 0.9);
-        transform: scale(1.1);
-      }
-
-      .category-button {
-        background-color: rgba(33, 150, 243, 0.8);
-      }
-
-      .category-button:hover {
-        background-color: rgba(30, 136, 229, 0.9);
-        transform: scale(1.1);
-      }
-
-      .category-panel {
-        position: fixed;
-        bottom: 80px;
-        right: 15px;
-        background: rgba(0, 0, 0, 0.8);
-        border-radius: 10px;
-        padding: 15px;
-        display: none;
-        flex-direction: column;
-        gap: 10px;
-        z-index: 1000;
-      }
-
-      .category-panel button {
-        background: linear-gradient(45deg, #6a11cb, #2575fc);
-        border: none;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: transform 0.2s;
-      }
-
-      .category-panel button:hover {
-        transform: scale(1.05);
-      }
-
-      .timer {
-        position: fixed;
-        top: 35%;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 6em;
-        font-weight: bold;
-        color: white;
-        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        transition: opacity 0.5s;
       }
     </style>
   </head>
   <body>
-    <h1>QUIZ TONIC</h1>
-    <div id="chosenActivity">Touchez l'écran pour lancer la chance !</div>
-    <div id="instructions">
-      Posez 1 doigt pour un défi solo, 2 doigts pour un défi en duo, <br />
-      ou posez autant de doigts que vous voulez pour un gros défi de groupe !
-    </div>
+    <div id="chosenActivity">Touchez l'écran pour commencer...</div>
     <div id="fingerContainer"></div>
-    <div id="timer" class="timer">3</div>
 
-    <div class="button-container">
-      <button class="category-button" onclick="toggleCategoryPanel()">
-        🎯
-      </button>
-      <button class="refresh-button" onclick="window.location.reload();">
-        🔄
-      </button>
-      <button class="fullscreen-button" onclick="toggleFullscreen()">📱</button>
-    </div>
+    <!-- Bouton Refresh -->
+    <button class="refresh-button" onclick="window.location.reload();">
+      🍺
+    </button>
 
-    <div id="categoryPanel" class="category-panel">
-      <button onclick="setCategory('fun')">Fun & Délire</button>
-      <button onclick="setCategory('action')">Action & Défis</button>
-      <button onclick="setCategory('social')">Social & Questions</button>
-      <button onclick="setCategory('all')">Tous les défis</button>
-    </div>
+    <!-- Bouton Plein Écran -->
+    <button class="fullscreen-button" onclick="toggleFullscreen()">🫦</button>
 
     <script>
       function toggleFullscreen() {
@@ -252,139 +142,73 @@
           document.exitFullscreen();
         }
       }
-
-      function toggleCategoryPanel() {
-        const panel = document.getElementById("categoryPanel");
-        if (panel.style.display === "flex") {
-          panel.style.display = "none";
-        } else {
-          panel.style.display = "flex";
-        }
-      }
-
-      // Catégories de défis
-      const defisGroupe = [
-        "Téléphone arabe : Le premier joueur invente une phrase, chacun la transmet à l'oreille",
-        "Créer une pyramide humaine en 30 secondes",
-        "Faire une choré improvisée tous ensemble sur la musique actuelle",
-        "Tous en cercle : chacun complimente la personne à sa droite",
-        "Que tout le monde imite l'accent d'une région française en même temps",
-        "Chanter ensemble le refrain d'une chanson connue",
-        "🎭 Freeze ! Tout le monde doit s'immobiliser dans une pose drôle pendant 30 secondes",
-        "Prendre un selfie de groupe avec la pose la plus originale possible",
-        "Chaîne de compliments : chacun dit quelque chose de gentil sur la personne à sa droite",
+      const activitémax = [
+        "telephone arabe",
+        "figure accrosport",
+        "As tu déjà ri du malheur de quelqu'un ?",
+        "As tu déjà vomis dans un lieu public ?",
+        "Meilleur anecdote de soirée",
+        "Meilleur anecdote au bassin a flot",
+        "Meilleur anecdote avec un bureau",
+        "Meilleur anecdote avec un vélo",
+        "Meilleur anecdote avec un bateau",
       ];
 
-      const defisSolo = [
-        "Fais 3 pompes avec style 💪",
-        "Invente une danse sur 15 secondes 🕺",
-        "Imite un animal de ton choix 🐒",
-        "Raconte une blague qui fait rire au moins une personne 😂",
-        "Fais le poirier pendant 5 secondes (ou essaie !) 🙃",
-        "Chante le refrain de ta chanson préférée 🎤",
-        "Mime un film et fais-le deviner aux autres 🎬",
-        "Fais 5 squats en comptant à voix haute 🏋️",
-        "Fais un discours de 30 secondes sur un objet dans la pièce 🎙️",
-        "Montre ton talent caché 🌟",
-        "Imite une célébrité et fais-la deviner 🌟",
-        "Récite l'alphabet à l'envers (ou essaie) 🔤",
-        "Fais semblant d'être un présentateur TV pendant 30 secondes 📺",
+      const activité1 = [
+        "roulade",
+        "pompe à une main",
+        "fait le poirier",
+        "pictionnary ",
+        "invente une danse",
+        "raconte une histoire avec une voix aigue",
+        "speech sur un objet banal",
+        "présente la météo",
+        "envoie un selfi ridicule à tes parents",
+        "essaye de faire un tour de magie",
+        "karaoké",
+        "imite une personne autour de toi",
+        "Quelle est ton talent chaché",
+        "Quelle est le plat que tu as raté en cuisine",
+        "Quelle est le cadeau le plus bizarre que tu es reçu",
+        "Quelle est la pire mode que tu est suivi",
+        "traverse la salle les yeux bander",
       ];
 
-      const defisDuo = [
-        "Face à face : dansez en miroir pendant 20 secondes 💃",
-        "Faites un concours de grimaces, les autres votent pour le gagnant 😜",
-        "L'un mime une action, l'autre doit deviner 🎭",
-        "Faites une course de chaises dans la pièce 🪑",
-        "Reproduisez la scène du Titanic à la proue du bateau 🚢",
-        "Faites un mini sketch improvisé de 30 secondes 🎭",
-        "Pose de yoga à deux : tenez 10 secondes sans tomber 🧘",
-        "Faites-vous un compliment sincère l'un à l'autre 💖",
-        "Pierre-feuille-ciseaux en 3 manches 👊",
-        "Défiez-vous dans un concours de regard : le premier qui rit a perdu 👁️",
-        "Échangez un vêtement/accessoire pendant 5 minutes 👕",
-        "Inventez et apprenez-vous une poignée de main complexe en 30 secondes 🤝",
+      const activité2 = [
+        "invente ta rencontre avec une personne",
+        "decris quelqu'un en 3 adjectif",
+        "pompe avec une personne sur le dos",
+        "course de chaise",
+        "course de brouette",
+        "concours de regard",
+        "lire les message avec une personne",
+        "fais une chason sur une personne",
+        "reproduit la scene du titanic",
+        "reproduit le portée de Dirty Dancing",
+        "Changer de chaussures",
       ];
 
-      const questionsSociales = [
-        "Quelle est ta meilleure anecdote de soirée ? 🍾",
-        "Quel est ton film préféré et pourquoi ? 🎬",
-        "Avec quelle célébrité voudrais-tu passer une journée ? 🌟",
-        "Quel est ton rêve le plus fou ? 💭",
-        "Quelle est la chose la plus effrayante que tu aies faite ? 😱",
-        "Quelle est la blague la plus nulle que tu connaisses ? 😂",
-        "Quel métier aurais-tu aimé faire dans une autre vie ? 💼",
-        "Quelle est ta plus grande fierté ? 🏆",
-        "Si tu pouvais avoir un super pouvoir, lequel choisirais-tu ? ⚡",
-        "Quelle est la pire mode que tu as suivie ? 👗",
-        "As-tu déjà ri dans un moment inapproprié ? Raconte ! 🤭",
-        "Quel a été ton pire rendez-vous amoureux ? ❤️",
-        "Quelle est la chose la plus embarrassante qui t'est arrivée ? 😳",
-      ];
-
-      let currentCategory = "all";
       let fingers = [];
       let touchPositions = {};
       let selectionTimeout;
-      let timerInterval;
-
-      function setCategory(category) {
-        currentCategory = category;
-        document.getElementById("categoryPanel").style.display = "none";
-
-        // Message de confirmation
-        const chosenActivityDiv = document.getElementById("chosenActivity");
-        switch (category) {
-          case "fun":
-            chosenActivityDiv.textContent =
-              "Catégorie : Fun & Délire sélectionnée !";
-            break;
-          case "action":
-            chosenActivityDiv.textContent =
-              "Catégorie : Action & Défis sélectionnée !";
-            break;
-          case "social":
-            chosenActivityDiv.textContent =
-              "Catégorie : Social & Questions sélectionnée !";
-            break;
-          case "all":
-            chosenActivityDiv.textContent = "Toutes les catégories activées !";
-            break;
-        }
-
-        setTimeout(() => {
-          chosenActivityDiv.textContent =
-            "Touchez l'écran pour lancer la chance !";
-        }, 2000);
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(() => {
-          document.getElementById("instructions").style.opacity = "0.7";
-        }, 5000);
-      });
 
       document
         .getElementById("fingerContainer")
         .addEventListener("touchstart", function (event) {
           event.preventDefault();
-          document.getElementById("instructions").style.opacity = "0";
-
           fingers.forEach((f) => f.remove());
           fingers = [];
           touchPositions = {};
 
-          for (let i = 0; i < event.touches.length; i++) {
-            let touch = event.touches[i];
+          for (let touch of event.touches) {
             let rect = event.target.getBoundingClientRect();
             let x = touch.clientX - rect.left;
             let y = touch.clientY - rect.top;
 
             let finger = document.createElement("div");
             finger.classList.add("finger");
-            finger.style.left = `${x - 60}px`;
-            finger.style.top = `${y - 60}px`;
-            finger.textContent = i + 1;
+            finger.style.left = `${x - 45}px`;
+            finger.style.top = `${y - 45}px`;
 
             document.getElementById("fingerContainer").appendChild(finger);
             fingers.push(finger);
@@ -393,30 +217,9 @@
 
           clearTimeout(selectionTimeout);
           if (fingers.length >= 1) {
-            document.getElementById("chosenActivity").textContent =
-              "Préparation du défi...";
-            startCountdown();
+            selectionTimeout = setTimeout(chooseFingers, 1500);
           }
         });
-
-      function startCountdown() {
-        const timerElement = document.getElementById("timer");
-        timerElement.style.opacity = "1";
-        let count = 3;
-        timerElement.textContent = count;
-
-        timerInterval = setInterval(() => {
-          count--;
-          timerElement.textContent = count;
-          if (count <= 0) {
-            clearInterval(timerInterval);
-            timerElement.style.opacity = "0";
-            setTimeout(() => {
-              chooseFingers();
-            }, 500);
-          }
-        }, 800);
-      }
 
       function chooseFingers() {
         if (fingers.length === 0) return;
@@ -433,104 +236,26 @@
           if (!chosen.includes(index)) chosen.push(index);
         }
 
-        chosen.forEach((i) => {
-          fingers[i].classList.add("chosen");
-          // Ajout d'un emoji dans le cercle choisi
-          fingers[i].innerHTML = "🎯";
-        });
+        chosen.forEach((i) => fingers[i].classList.add("chosen"));
       }
 
       function choisirPhrase() {
-        let selectedCategory;
-
-        switch (currentCategory) {
-          case "fun":
-            if (fingers.length >= 3)
-              return defisGroupe[
-                Math.floor(Math.random() * defisGroupe.length)
-              ];
-            if (fingers.length === 2)
-              return defisDuo[Math.floor(Math.random() * defisDuo.length)];
-            return defisSolo[Math.floor(Math.random() * defisSolo.length)];
-          case "action":
-            if (fingers.length >= 3)
-              return (
-                defisGroupe.filter(
-                  (defi) =>
-                    defi.includes("🎭") ||
-                    defi.includes("💪") ||
-                    defi.includes("🏋️")
-                )[0] || defisGroupe[0]
-              );
-            if (fingers.length === 2)
-              return (
-                defisDuo.filter(
-                  (defi) =>
-                    defi.includes("🎭") ||
-                    defi.includes("💪") ||
-                    defi.includes("🏋️")
-                )[0] || defisDuo[0]
-              );
-            return (
-              defisSolo.filter(
-                (defi) => defi.includes("💪") || defi.includes("🏋️")
-              )[0] || defisSolo[0]
-            );
-          case "social":
-            if (fingers.length >= 3)
-              return (
-                defisGroupe.filter((defi) => defi.includes("compliment"))[0] ||
-                defisGroupe[0]
-              );
-            if (fingers.length === 2)
-              return (
-                defisDuo.filter((defi) => defi.includes("compliment"))[0] ||
-                defisDuo[0]
-              );
-            return questionsSociales[
-              Math.floor(Math.random() * questionsSociales.length)
-            ];
-          case "all":
-          default:
-            if (fingers.length >= 3)
-              return defisGroupe[
-                Math.floor(Math.random() * defisGroupe.length)
-              ];
-            if (fingers.length === 2)
-              return defisDuo[Math.floor(Math.random() * defisDuo.length)];
-            return [...defisSolo, ...questionsSociales][
-              Math.floor(
-                Math.random() * (defisSolo.length + questionsSociales.length)
-              )
-            ];
-        }
+        let allActivities = [...activitémax, ...activité1, ...activité2];
+        return allActivities[Math.floor(Math.random() * allActivities.length)];
       }
 
       function doigt(activite) {
-        if (fingers.length >= 3) return fingers.length;
-        if (fingers.length === 2) return 2;
-        return 1;
+        if (activitémax.includes(activite)) return fingers.length;
+        if (activité1.includes(activite)) return 1;
+        if (activité2.includes(activite)) return 2;
+        return -1;
       }
 
       function afficherPhrase(phrase) {
         const chosenActivityDiv = document.getElementById("chosenActivity");
-
-        if (fingers.length >= 3) {
-          chosenActivityDiv.textContent = "💥 DÉFI DE GROUPE : " + phrase;
-        } else if (fingers.length === 2) {
-          chosenActivityDiv.textContent = "👯 DÉFI DUO : " + phrase;
-        } else {
-          chosenActivityDiv.textContent = "🎯 DÉFI SOLO : " + phrase;
-        }
-
+        chosenActivityDiv.textContent = "Activité choisie : " + phrase;
         chosenActivityDiv.style.opacity = "1";
         chosenActivityDiv.style.transform = "translate(-50%, 0)";
-
-        // Animation de l'élément
-        chosenActivityDiv.style.animation = "pulse 1s";
-        setTimeout(() => {
-          chosenActivityDiv.style.animation = "";
-        }, 1000);
       }
     </script>
   </body>
