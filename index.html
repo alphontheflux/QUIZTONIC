@@ -4,50 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil</title>
-</head>
-<body>
+  </head>
+  <body>
     <div id="video-container">
       <video id="intro-video" autoplay muted>
-        <source src="/style/image/game tonic animé.mp4" type="video/mp4">
+        <source
+          src="/QUIZTONIC/style/image/game tonic animé.mp4"
+          type="video/mp4"
+        />
         Votre navigateur ne supporte pas les vidéos.
       </video>
     </div>
-  
+
     <div id="main-content" class="hidden">
       <div class="container">
         <div class="boutton-conteneur">
-            <a href="/bete.html">
-                <button>Jouer</button>
-            </a>
+          <a href="/bete.html">
+            <button>Jouer</button>
+          </a>
         </div>
       </div>
     </div>
-    <style>body {
-      height: 100vh;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: url('/style/image/fond.jpg') no-repeat center;
-      background-size: cover;
-  }
-  
-  
-  .container {
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      width: 100%;
-      max-width: 500px;
-      position: relative;
-      top: 5%;
-  }
-  
-  
-  @media (min-width: 1024px) {
+    <style>
       body {
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: url("/style/image/fond.jpg") no-repeat center;
+        background-size: cover;
+      }
+
+      .container {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        max-width: 500px;
+        position: relative;
+        top: 5%;
+      }
+
+      @media (min-width: 1024px) {
+        body {
           background-size: contain;
           background-color: black;
       }
@@ -132,4 +134,4 @@
 
   </script>
   </body>
-  
+</html>
