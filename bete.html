@@ -124,8 +124,9 @@
       </button>
     </div>
 
-    <script>
-      import { midPhrase } from ".bete.html";
+    <script type="module">
+      import { midPhrase } from "roulette.js";
+
       const activitémax = [
         "telephone arabe",
         "figure accrosport",
@@ -223,7 +224,7 @@
       function chooseFingers() {
         if (fingers.length === 0) return;
 
-        let phrase = choisirPhrase();
+        let phrase = midPhrase;
         let nombreDoigts = doigt(midPhrase);
 
         console.log(`Phrase choisie : ${midPhrase}`);
@@ -253,10 +254,10 @@
       //   return allActivities[randomIndex];
       // }
 
-      function doigt(midPhrase) {
-        if (activitémax.includes(midPhrase)) return fingers.length;
-        if (activité1.includes(midPhrase)) return 1;
-        if (activité2.includes(midPhrase)) return 2;
+      function doigt(phrase) {
+        if (activitémax.includes(phrase)) return fingers.length;
+        if (activité1.includes(phrase)) return 1;
+        if (activité2.includes(phrase)) return 2;
         return -1;
       }
     </script>
