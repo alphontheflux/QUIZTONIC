@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="/acceuil.js" defer></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil</title>
   </head>
   <body>
@@ -53,60 +52,86 @@
         body {
           background-size: contain;
           background-color: black;
-        }
       }
+  }
+  
+  .boutton-conteneur button {
+      font-size: 25px;
+      margin-top: 70px;
+      padding: 25px 50px;
+      border: 3px solid black;
+      border-radius: 8px;
+      background-color: transparent;
+      color: black;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+      font-weight: bold;
+  }
+  
+  .boutton-conteneur button:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+      transform: scale(1.05);
+  }
+  
+  
+  #video-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle, #ff66b2 20%, #8000ff 80%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      overflow: hidden;
+  }
+  
+  
+  #intro-video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover; 
+  }
+  
+  
+  .hidden {
+      display: none;
+  }
+  
+  .fade-out {
+      opacity: 0;
+      transition: opacity 1s ease-out;
+  }
+  
+  #main-content {
+      opacity: 0;
+      transition: opacity 1s ease-in;
+  }
+  </style>
+  <script> 
+    document.addEventListener("DOMContentLoaded", function () {
+    const video = document.getElementById("intro-video");
+    const videoContainer = document.getElementById("video-container");
+    const mainContent = document.getElementById("main-content");
 
-      .boutton-conteneur button {
-        font-size: 25px;
-        margin-top: 70px;
-        padding: 25px 50px;
-        border: 3px solid black;
-        border-radius: 8px;
-        background-color: transparent;
-        color: black;
-        cursor: pointer;
-        transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-        font-weight: bold;
-      }
+    function showMainContent() {
+        videoContainer.classList.add("fade-out");
 
-      .boutton-conteneur button:hover {
-        background-color: rgba(0, 0, 0, 0.1);
-        transform: scale(1.05);
-      }
+        setTimeout(() => {
+            videoContainer.style.display = "none";
+            mainContent.classList.remove("hidden");
+            mainContent.style.opacity = "1"; 
+        }, 800);
+    }
 
-      #video-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: radial-gradient(circle, #ff66b2 20%, #8000ff 80%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        overflow: hidden;
-      }
+    video.addEventListener("ended", showMainContent);
 
-      #intro-video {
-        width: 100vw;
-        height: 100vh;
-        object-fit: cover;
-      }
 
-      .hidden {
-        display: none;
-      }
+    setTimeout(showMainContent, 4500);
+});
 
-      .fade-out {
-        opacity: 0;
-        transition: opacity 1s ease-out;
-      }
-
-      #main-content {
-        opacity: 0;
-        transition: opacity 1s ease-in;
-      }
-    </style>
+  </script>
   </body>
 </html>
