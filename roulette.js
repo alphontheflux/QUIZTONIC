@@ -1,102 +1,133 @@
-(function () {
-  const activitemax = [
-    "telephone arabe", "figure accrosport", "As tu déjà ri du malheur de quelqu'un ?", 
-    "As tu déjà vomis dans un lieu public ?", "Meilleur anecdote de soirée", 
-    "Meilleur anecdote au bassin a flot", "Meilleur anecdote avec un bureau", 
-    "Meilleur anecdote avec un vélo", "Meilleur anecdote avec un bateau",
-  ];
+const activitémax = [
+  "telephone arabe",
+  "figure accrosport",
+  "As tu déjà ri du malheur de quelqu'un ?",
+  "As tu déjà vomis dans un lieu public ?",
+  "Meilleur anecdote de soirée",
+  "Meilleur anecdote au bassin a flot",
+  "Meilleur anecdote avec un bureau",
+  "Meilleur anecdote avec un vélo",
+  "Meilleur anecdote avec un bateau",
+];
 
-  const items = [
-    "invente ta rencontre avec une personne", "decris quelqu'un en 3 adjectif", 
-    "pompe avec une personne sur le dos", "course de chaise", "course de brouette", 
-    "concours de regard", "lire les message avec une personne", "fais une chason sur une personne",
-    "reproduit la scene du titanic", "reproduit le portée de Dirty Dancing", 
-    "Changer de chaussures", "roulade", "pompe à une main", "fait le poirier", 
-    "pictionnary", "invente une danse", "raconte une histoire avec une voix aigue", 
-    "speech sur un objet banal", "présente la météo", "envoie un selfi ridicule à tes parents", 
-    "essaye de faire un tour de magie", "karaoké", "imite une personne autour de toi", 
-    "Quelle est ton talent chaché", "Quelle est le plat que tu as raté en cuisine", 
-    "Quelle est le cadeau le plus bizarre que tu es reçu", "Quelle est la pire mode que tu est suivi", 
-    "traverse la salle les yeux bander", "telephone arabe", "figure accrosport", 
-    "As tu déjà ri du malheur de quelqu'un ?", "As tu déjà vomis dans un lieu public ?", 
-    "Meilleur anecdote de soirée", "Meilleur anecdote au bassin a flot", 
-    "Meilleur anecdote avec un bureau", "Meilleur anecdote avec un vélo", 
-    "Meilleur anecdote avec un bateau",
-  ];
+const activité1 = [
+  "roulade",
+  "pompe à une main",
+  "fait le poirier",
+  "pictionnary ",
+  "invente une danse",
+  "raconte une histoire avec une voix aigue",
+  "speech sur un objet banal",
+  "présente la météo",
+  "envoie un selfi ridicule à tes parents",
+  "essaye de faire un tour de magie",
+  "karaoké",
+  "imite une personne autour de toi",
+  "Quelle est ton talent chaché",
+  "Quelle est le plat que tu as raté en cuisine",
+  "Quelle est le cadeau le plus bizarre que tu es reçu",
+  "Quelle est la pire mode que tu est suivi",
+  "traverse la salle les yeux bander",
+];
 
-  const doors = document.querySelectorAll(".door");
+const activité2 = [
+  "invente ta rencontre avec une personne",
+  "decris quelqu'un en 3 adjectif",
+  "pompe avec une personne sur le dos",
+  "course de chaise",
+  "course de brouette",
+  "concours de regard",
+  "lire les message avec une personne",
+  "fais une chason sur une personne",
+  "reproduit la scene du titanic",
+  "reproduit le portée de Dirty Dancing",
+  "Changer de chaussures",
+];
 
-  document.querySelector("#spinner").addEventListener("click", spin);
-  document.querySelector("#reseter").addEventListener("click", init);
+const items = [
+  "telephone arabe",
+  "figure accrosport",
+  "As tu déjà ri du malheur de quelqu'un ?",
+  "As tu déjà vomis dans un lieu public ?",
+  "Meilleur anecdote de soirée",
+  "Meilleur anecdote au bassin a flot",
+  "Meilleur anecdote avec un bureau",
+  "Meilleur anecdote avec un vélo",
+  "Meilleur anecdote avec un bateau",
+  "roulade",
+  "pompe à une main",
+  "fait le poirier",
+  "pictionnary ",
+  "invente une danse",
+  "raconte une histoire avec une voix aigue",
+  "speech sur un objet banal",
+  "présente la météo",
+  "envoie un selfi ridicule à tes parents",
+  "essaye de faire un tour de magie",
+  "karaoké",
+  "imite une personne autour de toi",
+  "Quelle est ton talent chaché",
+  "Quelle est le plat que tu as raté en cuisine",
+  "Quelle est le cadeau le plus bizarre que tu es reçu",
+  "Quelle est la pire mode que tu est suivi",
+  "traverse la salle les yeux bander",
+  "invente ta rencontre avec une personne",
+  "decris quelqu'un en 3 adjectif",
+  "pompe avec une personne sur le dos",
+  "course de chaise",
+  "course de brouette",
+  "concours de regard",
+  "lire les message avec une personne",
+  "fais une chason sur une personne",
+  "reproduit la scene du titanic",
+  "reproduit le portée de Dirty Dancing",
+  "Changer de chaussures",
+];
 
-  function init(firstInit = true, groups = 1, duration = 1) {
-    for (const door of doors) {
-      if (firstInit) {
-        door.dataset.spinned = "0";
-      } else if (door.dataset.spinned === "1") {
-        return;
-      }
+document.querySelector("#spinner").addEventListener("click", spin);
 
-      const boxes = door.querySelector(".boxes");
-      const boxesClone = boxes.cloneNode(false);
-      const pool = [""];
+const shitcase = document.querySelectorAll(".shitcase");
+const midcase = document.querySelectorAll(".midcase");
+let upTabCase = [];
+let midTabCase = [];
+let downTabCase = [];
 
-      if (!firstInit) {
-        const arr = [];
-        for (let n = 0; n < (groups > 0 ? groups : 1); n++) {
-          arr.push(...items);
-        }
-        pool.push(...shuffle(arr));
-      }
+function choisirPhrase() {
+  let allActivities = [...activitémax, ...activité1, ...activité2];
+  let randomIndex = Math.floor(Math.random() * allActivities.length);
+  return allActivities[randomIndex];
+}
 
-      for (let i = pool.length - 1; i >= 0; i--) {
-        const box = document.createElement("div");
-        box.classList.add("box");
-        box.style.width = door.clientWidth + "px";
-        box.style.height = door.clientHeight + "px";
-        box.textContent = pool[i];
-        boxesClone.appendChild(box);
-      }
+function spin() {
 
-      boxesClone.style.transitionDuration = `${duration > 0 ? duration : 1}s`;
-      boxesClone.style.transform = `translateY(-${door.clientHeight * (pool.length - 1)}px)`;
-      door.replaceChild(boxesClone, boxes);
+    for (let i = 0; i < 15; i++) {
+        upTabCase.push(choisirPhrase());
+        midTabCase.push(choisirPhrase());
+        downTabCase.push(choisirPhrase());
     }
-  }
 
-  async function spin() {
-    init(false, 1, 3); 
-  
-    
-    const promises = [];
-    for (const door of doors) {
-      const boxes = door.querySelector(".boxes");
-      const duration = parseInt(boxes.style.transitionDuration);
-  
-      
-      boxes.style.transition = "transform 3s ease-out";
-      boxes.style.transform = "translateY(0)"; 
-  
-     
-      requestAnimationFrame(() => {
-      
-        promises.push(new Promise((resolve) => setTimeout(resolve, duration * 1000)));
-      });
-    }
-  
-    await Promise.all(promises);
-  }
-  
 
-  function shuffle([...arr]) {
-    let m = arr.length;
-    while (m) {
-      const i = Math.floor(Math.random() * m--);
-      [arr[m], arr[i]] = [arr[i], arr[m]];
-    }
-    return arr;
-  }
+    shitcase.forEach((div) => {
+      const p = document.createElement("p");
+      p.textContent = downTabCase[Math.floor(Math.random() * downTabCase.length)];
+      div.append(p);
+    });
 
-  init();
-})();
+    midcase.forEach((midDiv) => {
+      const midP = document.createElement("p");
+      midP.textContent = midTabCase[Math.floor(Math.random() * midTabCase.length)]; 
+      midDiv.append(midP);
+    });
 
+
+    midcase.forEach((midDiv) => {
+      const lastP = midDiv.querySelector("p:last-child");
+      if (lastP) {
+        let midPhrase = lastP.textContent
+        console.log(midPhrase)
+      }
+    });
+
+    midcase.style.transform = `translateY(-${midTabCase.length}px)`;
+    console.log(downTabCase);
+}
