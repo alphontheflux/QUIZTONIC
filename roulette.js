@@ -1,4 +1,4 @@
-const activitémax =  [
+const activitémax = [
   "Téléphone arabe",
   "Figure d'acrosport",
   "As-tu déjà ri du malheur de quelqu'un ?",
@@ -10,7 +10,7 @@ const activitémax =  [
   "Meilleure anecdote avec un bateau",
 ];
 
-const activité1 =[
+const activité1 = [
   "Roulade",
   "Pompe à une main",
   "Fais le poirier",
@@ -99,35 +99,45 @@ function choisirPhrase() {
 }
 
 function spin() {
+  for (let i = 0; i < 15; i++) {
+    upTabCase.push(choisirPhrase());
+    midTabCase.push(choisirPhrase());
+    downTabCase.push(choisirPhrase());
+  }
 
-    for (let i = 0; i < 15; i++) {
-        upTabCase.push(choisirPhrase());
-        midTabCase.push(choisirPhrase());
-        downTabCase.push(choisirPhrase());
+  shitcase.forEach((div) => {
+    const p = document.createElement("p");
+    p.textContent = downTabCase[Math.floor(Math.random() * downTabCase.length)];
+    div.append(p);
+  });
+
+  midcase.forEach((midDiv) => {
+    const midP = document.createElement("p");
+    midP.textContent =
+      midTabCase[Math.floor(Math.random() * midTabCase.length)];
+    midDiv.append(midP);
+  });
+
+  midcase.forEach((midDiv) => {
+    const lastP = midDiv.querySelector("p:last-child");
+    if (lastP) {
+      let midPhrase = lastP.textContent;
+      console.log(midPhrase);
     }
+  });
 
+  
+  const spinnerButton = document.querySelector("#spinner");
+  spinnerButton.style.display = 'none';
+  
+  const suivantButton = document.createElement("button");
+  suivantButton.textContent = "Suivant";
+  suivantButton.id = "suivant";
+  document.body.appendChild(suivantButton);
+  
+  suivantButton.addEventListener("click", () => {
+    window.location.href = "bete.html";
+  });
 
-    shitcase.forEach((div) => {
-      const p = document.createElement("p");
-      p.textContent = downTabCase[Math.floor(Math.random() * downTabCase.length)];
-      div.append(p);
-    });
-
-    midcase.forEach((midDiv) => {
-      const midP = document.createElement("p");
-      midP.textContent = midTabCase[Math.floor(Math.random() * midTabCase.length)]; 
-      midDiv.append(midP);
-    });
-
-
-    midcase.forEach((midDiv) => {
-      const lastP = midDiv.querySelector("p:last-child");
-      if (lastP) {
-        let midPhrase = lastP.textContent
-        console.log(midPhrase)
-      }
-    });
-
-    midcase.style.transform = `translateY(-${midTabCase.length}px)`;
-    console.log(downTabCase);
+  console.log(downTabCase);
 }
