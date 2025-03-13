@@ -21,6 +21,7 @@
         color: #fff;
         overflow: hidden;
         flex-direction: column;
+        text-align: center;
       }
 
       h1 {
@@ -29,18 +30,18 @@
         text-transform: uppercase;
         text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
         margin-bottom: 20px;
-        text-align: center;
         letter-spacing: 3px;
       }
 
       #chosenActivity {
         font-size: 1.5em;
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.3);
         padding: 15px;
         border-radius: 10px;
-        text-align: center;
-        margin-bottom: 20px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
       }
 
       #fingerContainer {
@@ -161,8 +162,7 @@
         if (fingers.length === 0) return;
 
         let phrase = choisirPhrase();
-        document.getElementById("chosenActivity").textContent =
-          "Activité choisie : " + phrase;
+        afficherPhrase(phrase);
         let nombreDoigts = doigt(phrase);
 
         fingers.forEach((f) => f.classList.remove("chosen"));
@@ -186,6 +186,13 @@
         if (activité1.includes(activite)) return 1;
         if (activité2.includes(activite)) return 2;
         return -1;
+      }
+
+      function afficherPhrase(phrase) {
+        const chosenActivityDiv = document.getElementById("chosenActivity");
+        chosenActivityDiv.textContent = "Activité choisie : " + phrase;
+        chosenActivityDiv.style.opacity = "1";
+        chosenActivityDiv.style.transform = "translateY(0)";
       }
     </script>
   </body>
