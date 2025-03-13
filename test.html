@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Duel Instantané</title>
+    <title>Quiz Tonic</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
@@ -27,12 +27,42 @@
       }
 
       h1 {
-        font-size: 3em;
+        font-size: 3.5em;
         font-weight: 700;
         text-transform: uppercase;
         text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
-        margin-top: 80px;
+        margin-top: 50px;
         letter-spacing: 3px;
+        color: #fff;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      #instructions {
+        position: fixed;
+        top: 22%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        max-width: 800px;
+        font-size: 1.2em;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 15px;
+        border-radius: 10px;
+        opacity: 1;
+        margin-bottom: 20px;
+        transition: opacity 0.5s ease-in-out;
       }
 
       #chosenActivity {
@@ -50,7 +80,6 @@
         opacity: 1;
         transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         z-index: 9999;
-        pointer-events: none;
       }
 
       #fingerContainer {
@@ -70,251 +99,150 @@
         background: linear-gradient(45deg, #ff5f6d, #ffc3a0);
         color: white;
         text-align: center;
+        line-height: 120px;
         border-radius: 50%;
-        font-size: 24px;
+        font-size: 30px;
         position: absolute;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        transition: transform 0.3s ease, background 0.3s ease,
+          box-shadow 0.3s ease;
       }
 
       .chosen {
         background: linear-gradient(45deg, #cd3c15, #917c7c);
         color: #c8df45;
-        box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
         transform: scale(1.3);
-        z-index: 100;
+        animation: glow 1s infinite alternate;
       }
 
-      .eliminated {
-        background: linear-gradient(45deg, #333, #666);
-        opacity: 0.5;
-        transform: scale(0.8);
+      @keyframes glow {
+        from {
+          box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+        to {
+          box-shadow: 0 0 30px rgba(255, 215, 0, 0.9);
+        }
       }
 
-      /* Boutons en bas à droite */
-      .fullscreen-button,
-      .refresh-button {
+      .button-container {
         position: fixed;
         bottom: 15px;
-        width: 40px;
-        height: 40px;
+        right: 15px;
+        display: flex;
+        gap: 10px;
+      }
+
+      .fullscreen-button,
+      .refresh-button,
+      .category-button {
+        width: 50px;
+        height: 50px;
         border: none;
         border-radius: 50%;
         color: white;
         cursor: pointer;
-        font-size: 20px;
+        font-size: 24px;
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: transform 0.2s, background-color 0.2s;
       }
 
-      /* Bouton plein écran */
       .fullscreen-button {
-        right: 15px;
         background-color: rgba(34, 34, 34, 0.8);
       }
 
       .fullscreen-button:hover {
         background-color: rgba(68, 68, 68, 0.9);
+        transform: scale(1.1);
       }
 
-      /* Bouton refresh */
       .refresh-button {
-        right: 65px;
         background-color: rgba(76, 175, 80, 0.8);
       }
 
       .refresh-button:hover {
         background-color: rgba(69, 160, 73, 0.9);
+        transform: scale(1.1);
       }
 
-      #duelInterface {
+      .category-button {
+        background-color: rgba(33, 150, 243, 0.8);
+      }
+
+      .category-button:hover {
+        background-color: rgba(30, 136, 229, 0.9);
+        transform: scale(1.1);
+      }
+
+      .category-panel {
         position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80%;
-        max-width: 800px;
-        background: rgba(26, 35, 126, 0.85);
-        border-radius: 20px;
-        padding: 20px;
-        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-        display: none;
-        text-align: center;
-        border: 3px solid #4db6ac;
-      }
-
-      #duelTitle {
-        font-size: 2em;
-        margin-bottom: 15px;
-        color: #ffd700;
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-      }
-
-      #duelChallenge {
-        font-size: 1.5em;
-        margin-bottom: 20px;
-        padding: 10px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-      }
-
-      #duelTimer {
-        font-size: 3em;
-        margin: 10px 0;
-        color: #ff5722;
-      }
-
-      .duelButton {
-        background: linear-gradient(45deg, #ff4081, #ff9800);
-        border: none;
-        border-radius: 50px;
-        color: white;
-        padding: 12px 30px;
-        font-size: 1.2em;
-        margin: 10px;
-        cursor: pointer;
-        transition: all 0.3s;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      }
-
-      .duelButton:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      }
-
-      #winnerAnnouncement {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        bottom: 80px;
+        right: 15px;
         background: rgba(0, 0, 0, 0.8);
-        padding: 20px;
         border-radius: 10px;
-        font-size: 2em;
-        z-index: 2000;
-        display: none;
-        text-align: center;
-        box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
-        border: 2px solid gold;
-        color: gold;
-      }
-
-      .player-name {
-        font-size: 0.7em;
-        margin-top: 5px;
-      }
-
-      .player-score {
-        font-size: 0.7em;
-        margin-top: 5px;
-        font-weight: bold;
-        color: #ffd700;
-      }
-
-      #gameTitle {
-        position: fixed;
-        top: 2%;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 2.5em;
-        color: #ffd700;
-        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
-        z-index: 100;
-      }
-
-      #instructions {
-        position: fixed;
-        bottom: 15%;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80%;
-        text-align: center;
-        font-size: 1.2em;
-        color: white;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-        background: rgba(0, 0, 0, 0.5);
         padding: 15px;
-        border-radius: 10px;
-        z-index: 50;
-      }
-
-      #scoreBoard {
-        position: fixed;
-        top: 20%;
-        right: 2%;
-        background: rgba(0, 0, 0, 0.7);
-        padding: 10px;
-        border-radius: 10px;
-        font-size: 1em;
-        z-index: 90;
-        text-align: left;
-        max-height: 60%;
-        overflow-y: auto;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         display: none;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 1000;
       }
 
-      .score-entry {
-        margin: 5px 0;
-        padding: 5px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      .category-panel button {
+        background: linear-gradient(45deg, #6a11cb, #2575fc);
+        border: none;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: transform 0.2s;
       }
 
-      .champion-badge {
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        background: gold;
-        color: black;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        font-size: 18px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+      .category-panel button:hover {
+        transform: scale(1.05);
+      }
+
+      .timer {
+        position: fixed;
+        top: 35%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 6em;
+        font-weight: bold;
+        color: white;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        transition: opacity 0.5s;
       }
     </style>
   </head>
   <body>
-    <div id="gameTitle">⚡ DUEL INSTANTANÉ 💥</div>
-    <div id="chosenActivity">Touchez l'écran pour commencer le duel...</div>
+    <h1>QUIZ TONIC</h1>
+    <div id="chosenActivity">Touchez l'écran pour lancer la chance !</div>
     <div id="instructions">
-      Posez tous un doigt sur l'écran pour entrer dans l'arène !
+      Posez 1 doigt pour un défi solo, 2 doigts pour un défi en duo, <br />
+      ou posez autant de doigts que vous voulez pour un gros défi de groupe !
     </div>
     <div id="fingerContainer"></div>
+    <div id="timer" class="timer">3</div>
 
-    <div id="duelInterface">
-      <div id="duelTitle">⚡ DUEL ÉPIQUE ⚡</div>
-      <div id="duelChallenge">Défi en cours de chargement...</div>
-      <div id="duelTimer">3</div>
-      <button class="duelButton" id="player1Button">Joueur 1</button>
-      <button class="duelButton" id="player2Button">Joueur 2</button>
+    <div class="button-container">
+      <button class="category-button" onclick="toggleCategoryPanel()">
+        🎯
+      </button>
+      <button class="refresh-button" onclick="window.location.reload();">
+        🔄
+      </button>
+      <button class="fullscreen-button" onclick="toggleFullscreen()">📱</button>
     </div>
 
-    <div id="winnerAnnouncement">
-      VICTOIRE DE <span id="winnerName">JOUEUR</span> ! 🏆
+    <div id="categoryPanel" class="category-panel">
+      <button onclick="setCategory('fun')">Fun & Délire</button>
+      <button onclick="setCategory('action')">Action & Défis</button>
+      <button onclick="setCategory('social')">Social & Questions</button>
+      <button onclick="setCategory('all')">Tous les défis</button>
     </div>
-
-    <div id="scoreBoard">
-      <h3 style="margin-top: 0">🏆 SCORES 🏆</h3>
-      <div id="scoreEntries"></div>
-    </div>
-
-    <!-- Bouton Refresh -->
-    <button class="refresh-button" onclick="window.location.reload();">
-      🔄
-    </button>
-
-    <!-- Bouton Plein Écran -->
-    <button class="fullscreen-button" onclick="toggleFullscreen()">⛶</button>
 
     <script>
       function toggleFullscreen() {
@@ -325,400 +253,284 @@
         }
       }
 
-      // Challenges pour les différents types de duels
-      const duelReflexes = [
-        "Toucher Express : Premier qui clique sur son bouton !",
-        "Réaction Éclair : Appuyez quand l'écran devient VERT !",
-        "Numéro Magique : Premier qui appuie quand le chiffre 7 apparaît !",
+      function toggleCategoryPanel() {
+        const panel = document.getElementById("categoryPanel");
+        if (panel.style.display === "flex") {
+          panel.style.display = "none";
+        } else {
+          panel.style.display = "flex";
+        }
+      }
+
+      // Catégories de défis
+      const defisGroupe = [
+        "Téléphone arabe : Le premier joueur invente une phrase, chacun la transmet à l'oreille",
+        "Créer une pyramide humaine en 30 secondes",
+        "Faire une choré improvisée tous ensemble sur la musique actuelle",
+        "Tous en cercle : chacun complimente la personne à sa droite",
+        "Que tout le monde imite l'accent d'une région française en même temps",
+        "Chanter ensemble le refrain d'une chanson connue",
+        "🎭 Freeze ! Tout le monde doit s'immobiliser dans une pose drôle pendant 30 secondes",
+        "Prendre un selfie de groupe avec la pose la plus originale possible",
+        "Chaîne de compliments : chacun dit quelque chose de gentil sur la personne à sa droite",
       ];
 
-      const duelEsprit = [
-        "Mot à Mot : Premier qui trouve un animal commençant par A !",
-        "Défi Langue : Premier qui dit correctement 'Les chaussettes de l'archiduchesse sont-elles sèches?' !",
-        "Devinette Flash : Combien font 8×7 ? Premier qui répond correctement !",
+      const defisSolo = [
+        "Fais 3 pompes avec style 💪",
+        "Invente une danse sur 15 secondes 🕺",
+        "Imite un animal de ton choix 🐒",
+        "Raconte une blague qui fait rire au moins une personne 😂",
+        "Fais le poirier pendant 5 secondes (ou essaie !) 🙃",
+        "Chante le refrain de ta chanson préférée 🎤",
+        "Mime un film et fais-le deviner aux autres 🎬",
+        "Fais 5 squats en comptant à voix haute 🏋️",
+        "Fais un discours de 30 secondes sur un objet dans la pièce 🎙️",
+        "Montre ton talent caché 🌟",
+        "Imite une célébrité et fais-la deviner 🌟",
+        "Récite l'alphabet à l'envers (ou essaie) 🔤",
+        "Fais semblant d'être un présentateur TV pendant 30 secondes 📺",
       ];
 
-      const duelPhysique = [
-        "Freeze Battle : Faites la grimace la plus drôle, le public vote !",
-        "Regard Hypnotique : Ne clignez pas des yeux, premier qui cligne perd !",
-        "Défi Chuchotement : Chuchotez votre nom, celui qu'on entend le mieux gagne !",
+      const defisDuo = [
+        "Face à face : dansez en miroir pendant 20 secondes 💃",
+        "Faites un concours de grimaces, les autres votent pour le gagnant 😜",
+        "L'un mime une action, l'autre doit deviner 🎭",
+        "Faites une course de chaises dans la pièce 🪑",
+        "Reproduisez la scène du Titanic à la proue du bateau 🚢",
+        "Faites un mini sketch improvisé de 30 secondes 🎭",
+        "Pose de yoga à deux : tenez 10 secondes sans tomber 🧘",
+        "Faites-vous un compliment sincère l'un à l'autre 💖",
+        "Pierre-feuille-ciseaux en 3 manches 👊",
+        "Défiez-vous dans un concours de regard : le premier qui rit a perdu 👁️",
+        "Échangez un vêtement/accessoire pendant 5 minutes 👕",
+        "Inventez et apprenez-vous une poignée de main complexe en 30 secondes 🤝",
       ];
 
-      const duelElimination = [
-        "Pile ou Face : Devinez si ce sera Pile ou Face !",
-        "Pierre-Feuille-Ciseaux : Un seul round, pas de seconde chance !",
-        "Vote du Public : Qui a le style vestimentaire le plus original ?",
+      const questionsSociales = [
+        "Quelle est ta meilleure anecdote de soirée ? 🍾",
+        "Quel est ton film préféré et pourquoi ? 🎬",
+        "Avec quelle célébrité voudrais-tu passer une journée ? 🌟",
+        "Quel est ton rêve le plus fou ? 💭",
+        "Quelle est la chose la plus effrayante que tu aies faite ? 😱",
+        "Quelle est la blague la plus nulle que tu connaisses ? 😂",
+        "Quel métier aurais-tu aimé faire dans une autre vie ? 💼",
+        "Quelle est ta plus grande fierté ? 🏆",
+        "Si tu pouvais avoir un super pouvoir, lequel choisirais-tu ? ⚡",
+        "Quelle est la pire mode que tu as suivie ? 👗",
+        "As-tu déjà ri dans un moment inapproprié ? Raconte ! 🤭",
+        "Quel a été ton pire rendez-vous amoureux ? ❤️",
+        "Quelle est la chose la plus embarrassante qui t'est arrivée ? 😳",
       ];
 
+      let currentCategory = "all";
       let fingers = [];
       let touchPositions = {};
       let selectionTimeout;
-      let playersInGame = [];
-      let eliminatedPlayers = [];
-      let currentDuel = {};
-      let playerNames = [
-        "👑",
-        "🦁",
-        "🐯",
-        "🦊",
-        "🐺",
-        "🦝",
-        "🐵",
-        "🐼",
-        "🐨",
-        "🐰",
-        "🦄",
-        "🐲",
-        "🐢",
-        "🐙",
-        "🦸",
-        "🧙",
-        "🧚",
-        "🥷",
-      ];
-      let playerScores = {};
-      let gameInProgress = false;
+      let timerInterval;
 
-      // Initialiser le tableau des scores
-      document.getElementById("scoreBoard").style.display = "block";
+      function setCategory(category) {
+        currentCategory = category;
+        document.getElementById("categoryPanel").style.display = "none";
+
+        // Message de confirmation
+        const chosenActivityDiv = document.getElementById("chosenActivity");
+        switch (category) {
+          case "fun":
+            chosenActivityDiv.textContent =
+              "Catégorie : Fun & Délire sélectionnée !";
+            break;
+          case "action":
+            chosenActivityDiv.textContent =
+              "Catégorie : Action & Défis sélectionnée !";
+            break;
+          case "social":
+            chosenActivityDiv.textContent =
+              "Catégorie : Social & Questions sélectionnée !";
+            break;
+          case "all":
+            chosenActivityDiv.textContent = "Toutes les catégories activées !";
+            break;
+        }
+
+        setTimeout(() => {
+          chosenActivityDiv.textContent =
+            "Touchez l'écran pour lancer la chance !";
+        }, 2000);
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(() => {
+          document.getElementById("instructions").style.opacity = "0.7";
+        }, 5000);
+      });
 
       document
         .getElementById("fingerContainer")
         .addEventListener("touchstart", function (event) {
           event.preventDefault();
-          // Si un duel est en cours, ne pas permettre de nouveaux doigts
-          if (
-            document.getElementById("duelInterface").style.display === "block"
-          ) {
-            return;
-          }
+          document.getElementById("instructions").style.opacity = "0";
 
-          // Nettoyer les anciens doigts si c'est un nouveau jeu
-          if (!gameInProgress) {
-            fingers.forEach((f) => f.remove());
-            fingers = [];
-            touchPositions = {};
-            playersInGame = [];
-            eliminatedPlayers = [];
-            playerScores = {};
-            updateScoreboard();
-            gameInProgress = true;
-          }
+          fingers.forEach((f) => f.remove());
+          fingers = [];
+          touchPositions = {};
 
-          for (let touch of event.touches) {
-            // Vérifier si ce touch est déjà suivi
-            if (touchPositions[touch.identifier]) continue;
-
+          for (let i = 0; i < event.touches.length; i++) {
+            let touch = event.touches[i];
             let rect = event.target.getBoundingClientRect();
             let x = touch.clientX - rect.left;
             let y = touch.clientY - rect.top;
 
             let finger = document.createElement("div");
             finger.classList.add("finger");
-            finger.style.left = `${x - 45}px`;
-            finger.style.top = `${y - 45}px`;
-
-            // Attribuer un nom de joueur aléatoire
-            let playerName =
-              playerNames[Math.floor(Math.random() * playerNames.length)];
-            finger.dataset.playerName = playerName;
-            finger.dataset.score = "0";
-            playerScores[playerName] = 0;
-
-            // Ajouter les éléments d'affichage
-            finger.innerHTML =
-              playerName +
-              "<div class='player-name'>Joueur</div>" +
-              "<div class='player-score'>Score: 0</div>";
+            finger.style.left = `${x - 60}px`;
+            finger.style.top = `${y - 60}px`;
+            finger.textContent = i + 1;
 
             document.getElementById("fingerContainer").appendChild(finger);
             fingers.push(finger);
             touchPositions[touch.identifier] = finger;
-
-            // Ajouter à la liste des joueurs en jeu
-            if (
-              !playersInGame.includes(finger) &&
-              !eliminatedPlayers.includes(finger)
-            ) {
-              playersInGame.push(finger);
-            }
           }
 
           clearTimeout(selectionTimeout);
-          if (playersInGame.length >= 2) {
+          if (fingers.length >= 1) {
             document.getElementById("chosenActivity").textContent =
-              "Préparation du duel... Tenez-vous prêts !";
-            selectionTimeout = setTimeout(setupDuel, 2000);
-          } else {
-            document.getElementById("chosenActivity").textContent =
-              "Il faut au moins 2 joueurs pour commencer !";
+              "Préparation du défi...";
+            startCountdown();
           }
-
-          // Mettre à jour le tableau des scores
-          updateScoreboard();
         });
 
-      document.addEventListener("touchend", function (event) {
-        // Gérer la suppression des doigts quand ils sont retirés
-        for (let i = 0; i < event.changedTouches.length; i++) {
-          let id = event.changedTouches[i].identifier;
-          if (touchPositions[id]) {
-            let fingerElement = touchPositions[id];
-            // Retirer de la liste des joueurs en jeu s'il y est
-            let index = playersInGame.indexOf(fingerElement);
-            if (
-              index > -1 &&
-              document.getElementById("duelInterface").style.display !== "block"
-            ) {
-              playersInGame.splice(index, 1);
-            }
+      function startCountdown() {
+        const timerElement = document.getElementById("timer");
+        timerElement.style.opacity = "1";
+        let count = 3;
+        timerElement.textContent = count;
 
-            // Supprimer l'élément du DOM si aucun duel n'est en cours
-            if (
-              document.getElementById("duelInterface").style.display !== "block"
-            ) {
-              // Supprimer du tableau des scores
-              delete playerScores[fingerElement.dataset.playerName];
-
-              fingerElement.remove();
-              let fIndex = fingers.indexOf(fingerElement);
-              if (fIndex > -1) {
-                fingers.splice(fIndex, 1);
-              }
-
-              updateScoreboard();
-            }
-            delete touchPositions[id];
+        timerInterval = setInterval(() => {
+          count--;
+          timerElement.textContent = count;
+          if (count <= 0) {
+            clearInterval(timerInterval);
+            timerElement.style.opacity = "0";
+            setTimeout(() => {
+              chooseFingers();
+            }, 500);
           }
-        }
-      });
-
-      function updateScoreboard() {
-        const scoreEntries = document.getElementById("scoreEntries");
-        scoreEntries.innerHTML = "";
-
-        // Trier les scores par ordre décroissant
-        const sortedScores = Object.entries(playerScores).sort(
-          (a, b) => b[1] - a[1]
-        );
-
-        sortedScores.forEach(([playerName, score]) => {
-          const entry = document.createElement("div");
-          entry.className = "score-entry";
-          entry.innerHTML = `${playerName} : ${score} points`;
-          scoreEntries.appendChild(entry);
-        });
+        }, 800);
       }
 
-      function setupDuel() {
-        if (playersInGame.length < 2) {
-          document.getElementById("chosenActivity").textContent =
-            "Pas assez de joueurs pour un duel !";
-          return;
-        }
+      function chooseFingers() {
+        if (fingers.length === 0) return;
 
-        // Sélectionner deux joueurs aléatoirement
-        let playerIndices = [];
-        while (
-          playerIndices.length < 2 &&
-          playerIndices.length < playersInGame.length
-        ) {
-          let index = Math.floor(Math.random() * playersInGame.length);
-          if (!playerIndices.includes(index)) playerIndices.push(index);
-        }
+        let phrase = choisirPhrase();
+        afficherPhrase(phrase);
+        let nombreDoigts = doigt(phrase);
 
-        currentDuel = {
-          player1: playersInGame[playerIndices[0]],
-          player2: playersInGame[playerIndices[1]],
-          type: Math.floor(Math.random() * 4), // 0: Réflexes, 1: Esprit, 2: Physique, 3: Élimination
-          challenge: null,
-          winner: null,
-        };
-
-        // Sélectionner le défi en fonction du type
-        let challengeArray;
-        switch (currentDuel.type) {
-          case 0:
-            challengeArray = duelReflexes;
-            break;
-          case 1:
-            challengeArray = duelEsprit;
-            break;
-          case 2:
-            challengeArray = duelPhysique;
-            break;
-          case 3:
-            challengeArray = duelElimination;
-            break;
-        }
-        currentDuel.challenge =
-          challengeArray[Math.floor(Math.random() * challengeArray.length)];
-
-        // Mettre en évidence les joueurs sélectionnés
         fingers.forEach((f) => f.classList.remove("chosen"));
-        currentDuel.player1.classList.add("chosen");
-        currentDuel.player2.classList.add("chosen");
+        let chosen = [];
 
-        // Afficher l'interface de duel
-        document.getElementById("duelChallenge").textContent =
-          currentDuel.challenge;
-        document.getElementById("player1Button").textContent =
-          currentDuel.player1.dataset.playerName;
-        document.getElementById("player2Button").textContent =
-          currentDuel.player2.dataset.playerName;
-        document.getElementById("duelInterface").style.display = "block";
+        while (chosen.length < nombreDoigts && chosen.length < fingers.length) {
+          let index = Math.floor(Math.random() * fingers.length);
+          if (!chosen.includes(index)) chosen.push(index);
+        }
 
-        // Afficher un compte à rebours
-        let countdown = 3;
-        document.getElementById("duelTimer").textContent = countdown;
-
-        let countdownInterval = setInterval(() => {
-          countdown--;
-          document.getElementById("duelTimer").textContent = countdown;
-
-          if (countdown <= 0) {
-            clearInterval(countdownInterval);
-            document.getElementById("duelTimer").textContent = "GO!";
-            startDuel();
-          }
-        }, 1000);
-
-        // Mettre à jour le message d'activité avec le défi
-        document.getElementById("chosenActivity").textContent =
-          "DUEL: " +
-          currentDuel.player1.dataset.playerName +
-          " VS " +
-          currentDuel.player2.dataset.playerName;
-        document.getElementById("instructions").textContent =
-          "DÉFI: " + currentDuel.challenge;
+        chosen.forEach((i) => {
+          fingers[i].classList.add("chosen");
+          // Ajout d'un emoji dans le cercle choisi
+          fingers[i].innerHTML = "🎯";
+        });
       }
 
-      function startDuel() {
-        // Activer les boutons pour les joueurs
-        document
-          .getElementById("player1Button")
-          .addEventListener("click", () => declareWinner(currentDuel.player1));
-        document
-          .getElementById("player2Button")
-          .addEventListener("click", () => declareWinner(currentDuel.player2));
+      function choisirPhrase() {
+        let selectedCategory;
 
-        // Pour les défis de réflexes, on peut ajouter un timer ou une couleur aléatoire
-        if (currentDuel.type === 0 && currentDuel.challenge.includes("VERT")) {
-          // Délai aléatoire avant de changer la couleur
-          setTimeout(() => {
-            document.getElementById("duelInterface").style.backgroundColor =
-              "rgba(0, 128, 0, 0.85)";
-          }, 1000 + Math.random() * 3000);
-        }
-
-        // Pour les défis avec timer
-        if (currentDuel.challenge.includes("Numéro Magique")) {
-          let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-          let currentIndex = 0;
-
-          let numberInterval = setInterval(() => {
-            document.getElementById("duelTimer").textContent =
-              numbers[currentIndex];
-            currentIndex = (currentIndex + 1) % numbers.length;
-
-            // Arrêter après un temps aléatoire
-            if (
-              Math.random() < 0.1 &&
-              document.getElementById("duelTimer").textContent === "7"
-            ) {
-              clearInterval(numberInterval);
-            }
-          }, 500);
+        switch (currentCategory) {
+          case "fun":
+            if (fingers.length >= 3)
+              return defisGroupe[
+                Math.floor(Math.random() * defisGroupe.length)
+              ];
+            if (fingers.length === 2)
+              return defisDuo[Math.floor(Math.random() * defisDuo.length)];
+            return defisSolo[Math.floor(Math.random() * defisSolo.length)];
+          case "action":
+            if (fingers.length >= 3)
+              return (
+                defisGroupe.filter(
+                  (defi) =>
+                    defi.includes("🎭") ||
+                    defi.includes("💪") ||
+                    defi.includes("🏋️")
+                )[0] || defisGroupe[0]
+              );
+            if (fingers.length === 2)
+              return (
+                defisDuo.filter(
+                  (defi) =>
+                    defi.includes("🎭") ||
+                    defi.includes("💪") ||
+                    defi.includes("🏋️")
+                )[0] || defisDuo[0]
+              );
+            return (
+              defisSolo.filter(
+                (defi) => defi.includes("💪") || defi.includes("🏋️")
+              )[0] || defisSolo[0]
+            );
+          case "social":
+            if (fingers.length >= 3)
+              return (
+                defisGroupe.filter((defi) => defi.includes("compliment"))[0] ||
+                defisGroupe[0]
+              );
+            if (fingers.length === 2)
+              return (
+                defisDuo.filter((defi) => defi.includes("compliment"))[0] ||
+                defisDuo[0]
+              );
+            return questionsSociales[
+              Math.floor(Math.random() * questionsSociales.length)
+            ];
+          case "all":
+          default:
+            if (fingers.length >= 3)
+              return defisGroupe[
+                Math.floor(Math.random() * defisGroupe.length)
+              ];
+            if (fingers.length === 2)
+              return defisDuo[Math.floor(Math.random() * defisDuo.length)];
+            return [...defisSolo, ...questionsSociales][
+              Math.floor(
+                Math.random() * (defisSolo.length + questionsSociales.length)
+              )
+            ];
         }
       }
 
-      function declareWinner(winner) {
-        // Désactiver les écouteurs d'événements pour éviter les clics multiples
-        document
-          .getElementById("player1Button")
-          .removeEventListener("click", () =>
-            declareWinner(currentDuel.player1)
-          );
-        document
-          .getElementById("player2Button")
-          .removeEventListener("click", () =>
-            declareWinner(currentDuel.player2)
-          );
+      function doigt(activite) {
+        if (fingers.length >= 3) return fingers.length;
+        if (fingers.length === 2) return 2;
+        return 1;
+      }
 
-        currentDuel.winner = winner;
-        let loser =
-          winner === currentDuel.player1
-            ? currentDuel.player2
-            : currentDuel.player1;
+      function afficherPhrase(phrase) {
+        const chosenActivityDiv = document.getElementById("chosenActivity");
 
-        // Mettre à jour le score du gagnant
-        let winnerName = winner.dataset.playerName;
-        playerScores[winnerName] = (playerScores[winnerName] || 0) + 1;
-        winner.dataset.score = playerScores[winnerName];
-
-        // Mettre à jour l'affichage du score sur le cercle du joueur
-        winner.querySelector(".player-score").textContent =
-          "Score: " + playerScores[winnerName];
-
-        // Annoncer le gagnant
-        document.getElementById("winnerName").textContent = winnerName;
-        document.getElementById("winnerAnnouncement").style.display = "block";
-
-        // Marquer le perdant comme éliminé
-        loser.classList.add("eliminated");
-        let index = playersInGame.indexOf(loser);
-        if (index > -1) {
-          playersInGame.splice(index, 1);
-          eliminatedPlayers.push(loser);
+        if (fingers.length >= 3) {
+          chosenActivityDiv.textContent = "💥 DÉFI DE GROUPE : " + phrase;
+        } else if (fingers.length === 2) {
+          chosenActivityDiv.textContent = "👯 DÉFI DUO : " + phrase;
+        } else {
+          chosenActivityDiv.textContent = "🎯 DÉFI SOLO : " + phrase;
         }
 
-        // Mettre à jour le tableau des scores
-        updateScoreboard();
+        chosenActivityDiv.style.opacity = "1";
+        chosenActivityDiv.style.transform = "translate(-50%, 0)";
 
-        // Fermer l'interface après un délai
+        // Animation de l'élément
+        chosenActivityDiv.style.animation = "pulse 1s";
         setTimeout(() => {
-          document.getElementById("duelInterface").style.display = "none";
-          document.getElementById("winnerAnnouncement").style.display = "none";
-
-          // Réinitialiser les couleurs
-          document.getElementById("duelInterface").style.backgroundColor =
-            "rgba(26, 35, 126, 0.85)";
-
-          // Vérifier s'il reste plus d'un joueur pour continuer le jeu
-          if (playersInGame.length > 1) {
-            document.getElementById("chosenActivity").textContent =
-              "Prêt pour le prochain duel ? Gardez vos doigts sur l'écran !";
-            document.getElementById("instructions").textContent =
-              "Touchez tous l'écran pour continuer le tournoi !";
-            selectionTimeout = setTimeout(setupDuel, 3000);
-          } else if (playersInGame.length === 1) {
-            // Champion final !
-            let champion = playersInGame[0];
-            document.getElementById("chosenActivity").textContent =
-              "🏆 CHAMPION FINAL : " + champion.dataset.playerName + " ! 🏆";
-            document.getElementById("instructions").textContent =
-              "Score final: " + champion.dataset.score + " victoires !";
-            champion.classList.add("chosen");
-
-            // Ajouter un badge de champion
-            if (!champion.querySelector(".champion-badge")) {
-              let badge = document.createElement("div");
-              badge.className = "champion-badge";
-              badge.textContent = "🏆";
-              champion.appendChild(badge);
-            }
-
-            // Signaler que le jeu est terminé
-            gameInProgress = false;
-          } else {
-            document.getElementById("chosenActivity").textContent =
-              "Touchez l'écran pour commencer un nouveau jeu...";
-            document.getElementById("instructions").textContent =
-              "Posez tous un doigt sur l'écran pour entrer dans l'arène !";
-            // Réinitialiser le jeu
-            gameInProgress = false;
-          }
-        }, 2000);
+          chosenActivityDiv.style.animation = "";
+        }, 1000);
       }
     </script>
   </body>
