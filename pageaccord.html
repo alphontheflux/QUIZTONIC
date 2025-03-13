@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Tonic - Oseras-tu jouer ?</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        color: white;
+        text-align: center;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        position: relative;
+        transition: background 1s ease-in-out;
+      }
+
+      .text-container {
+        height: 60px;
+        overflow: hidden;
+        position: relative;
+        width: 80%;
+        max-width: 600px;
+        margin-bottom: 20px;
+      }
+
+      .text {
+        position: absolute;
+        width: 100%;
+        font-size: 1.8em;
+        font-weight: bold;
+        opacity: 0;
+        white-space: nowrap;
+      }
+
+      .start-button {
+        background: #ff4b5c;
+        color: white;
+        border: none;
+        padding: 15px 35px;
+        font-size: 1.5em;
+        border-radius: 50px;
+        cursor: pointer;
+        margin-top: 40px;
+        transition: 0.3s ease-in-out;
+        box-shadow: 0 4px 10px rgba(255, 75, 92, 0.5);
+      }
+
+      .start-button:hover {
+        background: #ff1e3c;
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 6px 15px rgba(255, 30, 60, 0.7);
+        animation: bounce 1s ease-out forwards;
+      }
+
+      @keyframes bounce {
+        0% {
+          transform: scale(1) translateY(0);
+        }
+        30% {
+          transform: scale(1.2) translateY(-10px);
+        }
+        50% {
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      .beer-warning {
+        display: none;
+        font-size: 1.2em;
+        color: #ffcc00;
+        margin-top: 20px;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        font-weight: bold;
+        transform: scale(0);
+      }
+
+      .beer-warning.active {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .background-glow {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 0, 64, 0.1) 0%,
+          rgba(0, 0, 0, 0) 70%
+        );
+        animation: glowPulse 5s infinite alternate;
+        z-index: -1;
+      }
+
+      @keyframes glowPulse {
+        0% {
+          opacity: 0.3;
+        }
+        100% {
+          opacity: 0.7;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background-glow"></div>
+
+    <div class="text-container">
+      <div class="text" id="text1">
+        Tu es sur le point d'entrer dans une partie dont tu ne reviendras pas...
+      </div>
+    </div>
+    <div class="text-container">
+      <div class="text" id="text2">
+        Une fois lancé, il n'y a plus de retour en arrière...
+      </div>
+    </div>
+    <div class="text-container">
+      <div class="text" id="text3">
+        Si tu abandonnes, prépare ta monnaie pour payer la tournée... 🍺
+      </div>
+    </div>
+
+    <button class="start-button" onclick="startGame()">
+      Démarrer... si tu l'oses
+    </button>
+    <div class="beer-warning" id="beerWarning">
+      Trop tard ! Tu quittes = tu payes la bière 🍻
+    </div>
+
+    <script>
+      let currentTextIndex = 0;
+      const texts = document.querySelectorAll(".text");
+
+      // Fonction pour démarrer l'animation de texte
+      function startTextAnimation() {
+        // Afficher la première phrase immédiatement
+        showText(currentTextIndex);
+
+        // Transition entre les phrases
+        setInterval(() => {
+          currentTextIndex++;
+          if (currentTextIndex < texts.length) {
+            showText(currentTextIndex);
+          }
+        }, 8000); // Délai entre chaque texte (8 secondes)
+      }
+
+      // Fonction pour afficher le texte et le faire défiler
+      function showText(index) {
+        const text = texts[index];
+        text.style.opacity = 1; // Rendre le texte visible
+        text.style.transition = "transform 5s ease"; // Appliquer un effet de défilement
+
+        // Défilement du texte de droite à gauche
+        text.style.transform = "translateX(-100%)";
+      }
+
+      // Démarrer l'animation au chargement de la page
+      window.onload = startTextAnimation;
+
+      function startGame() {
+        document.querySelector(".start-button").style.display = "none";
+        const beerWarning = document.getElementById("beerWarning");
+        beerWarning.classList.add("active");
+
+        setTimeout(() => {
+          window.location.href = "game.html"; // Redirige vers la vraie partie
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>
