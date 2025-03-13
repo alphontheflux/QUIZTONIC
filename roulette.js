@@ -57,7 +57,7 @@ const items = [
   "roulade",
   "pompe à une main",
   "fait le poirier",
-  "pictionnary ",
+  "Fais deviner un dessin ",
   "invente une danse",
   "raconte une histoire avec une voix aigue",
   "speech sur un objet banal",
@@ -98,36 +98,36 @@ function choisirPhrase() {
   return allActivities[randomIndex];
 }
 
-let midPhrase = " ";
-
 function spin() {
-  for (let i = 0; i < 15; i++) {
-    upTabCase.push(choisirPhrase());
-    midTabCase.push(choisirPhrase());
-    downTabCase.push(choisirPhrase());
-  }
 
-  shitcase.forEach((div) => {
-    const p = document.createElement("p");
-    p.textContent = downTabCase[Math.floor(Math.random() * downTabCase.length)];
-    div.append(p);
-  });
-
-  midcase.forEach((midDiv) => {
-    const midP = document.createElement("p");
-    midP.textContent =
-      midTabCase[Math.floor(Math.random() * midTabCase.length)];
-    midDiv.append(midP);
-  });
-
-  midcase.forEach((midDiv) => {
-    const lastP = midDiv.querySelector("p:last-child");
-    if (lastP) {
-      let midPhrase = lastP.textContent;
+    for (let i = 0; i < 15; i++) {
+        upTabCase.push(choisirPhrase());
+        midTabCase.push(choisirPhrase());
+        downTabCase.push(choisirPhrase());
     }
-  });
 
-  midcase.style.transform = `translateY(-${midTabCase.length}px)`;
-  console.log(downTabCase);
+
+    shitcase.forEach((div) => {
+      const p = document.createElement("p");
+      p.textContent = downTabCase[Math.floor(Math.random() * downTabCase.length)];
+      div.append(p);
+    });
+
+    midcase.forEach((midDiv) => {
+      const midP = document.createElement("p");
+      midP.textContent = midTabCase[Math.floor(Math.random() * midTabCase.length)]; 
+      midDiv.append(midP);
+    });
+
+
+    midcase.forEach((midDiv) => {
+      const lastP = midDiv.querySelector("p:last-child");
+      if (lastP) {
+        let midPhrase = lastP.textContent
+        console.log(midPhrase)
+      }
+    });
+
+    midcase.style.transform = `translateY(-${midTabCase.length}px)`;
+    console.log(downTabCase);
 }
-export { midPhrase };
