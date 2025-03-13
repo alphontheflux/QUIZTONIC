@@ -14,7 +14,7 @@ const activité1 =[
   "Roulade",
   "Pompe à une main",
   "Fais le poirier",
-  "Pictionary",
+  "Fais deviner un dessin",
   "Invente une danse",
   "Raconte une histoire avec une voix aiguë",
   "Speech sur un objet banal",
