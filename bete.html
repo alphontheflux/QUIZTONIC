@@ -29,18 +29,24 @@
         font-weight: 700;
         text-transform: uppercase;
         text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
-        margin-bottom: 20px;
+        margin-top: 80px;
         letter-spacing: 3px;
       }
 
       #chosenActivity {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 600px;
         font-size: 1.5em;
-        background: rgba(255, 255, 255, 0.3);
+        background: rgba(0, 0, 0, 0.4);
         padding: 15px;
         border-radius: 10px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translate(-50%, -20px);
         transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
       }
 
@@ -192,7 +198,7 @@
         const chosenActivityDiv = document.getElementById("chosenActivity");
         chosenActivityDiv.textContent = "Activité choisie : " + phrase;
         chosenActivityDiv.style.opacity = "1";
-        chosenActivityDiv.style.transform = "translateY(0)";
+        chosenActivityDiv.style.transform = "translate(-50%, 0)";
       }
     </script>
   </body>
