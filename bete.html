@@ -140,10 +140,9 @@
         }
       }
 
+      // Le mode plein écran est activé immédiatement après le chargement de la page
       document.addEventListener("DOMContentLoaded", () => {
-        setTimeout(() => {
-          toggleFullscreen();
-        }, 500);
+        toggleFullscreen(); // Activation automatique en plein écran
       });
 
       const activitémax = [
