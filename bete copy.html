@@ -124,9 +124,7 @@
       </button>
     </div>
 
-    <script type="module">
-      import { midPhrase } from "roulette.js";
-
+    <script>
       const activitémax = [
         "telephone arabe",
         "figure accrosport",
@@ -248,16 +246,16 @@
         chosen.forEach((i) => fingers[i].classList.add("chosen"));
       }
 
-      // function choisirPhrase() {
-      //   let allActivities = [...activitémax, ...activité1, ...activité2];
-      //   let randomIndex = Math.floor(Math.random() * allActivities.length);
-      //   return allActivities[randomIndex];
-      // }
+      function choisirPhrase() {
+        let allActivities = [...activitémax, ...activité1, ...activité2];
+        let randomIndex = Math.floor(Math.random() * allActivities.length);
+        return allActivities[randomIndex];
+      }
 
-      function doigt(midPhrase) {
-        if (activitémax.includes(midPhrase)) return fingers.length;
-        if (activité1.includes(midPhrase)) return 1;
-        if (activité2.includes(midPhrase)) return 2;
+      function doigt(activite) {
+        if (activitémax.includes(activite)) return fingers.length;
+        if (activité1.includes(activite)) return 1;
+        if (activité2.includes(activite)) return 2;
         return -1;
       }
     </script>
