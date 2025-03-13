@@ -84,7 +84,6 @@
         transform: scale(1.3);
       }
 
-      /* Boutons en bas à droite */
       .fullscreen-button,
       .refresh-button {
         position: fixed;
@@ -101,7 +100,6 @@
         justify-content: center;
       }
 
-      /* Bouton plein écran */
       .fullscreen-button {
         right: 15px;
         background-color: rgba(34, 34, 34, 0.8);
@@ -111,9 +109,8 @@
         background-color: rgba(68, 68, 68, 0.9);
       }
 
-      /* Bouton refresh */
       .refresh-button {
-        right: vw;
+        right: 15px;
         bottom: 10vh;
         width: 30%;
         background-color: rgba(76, 175, 80, 0.8);
@@ -128,12 +125,10 @@
     <div id="chosenActivity">Touchez l'écran pour commencer...</div>
     <div id="fingerContainer"></div>
 
-    <!-- Bouton Refresh -->
     <button class="refresh-button" onclick="window.location.reload();">
       relancer
     </button>
 
-    <!-- Bouton Plein Écran -->
     <button class="fullscreen-button" onclick="toggleFullscreen()">🫦</button>
 
     <script>
@@ -144,6 +139,13 @@
           document.exitFullscreen();
         }
       }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          toggleFullscreen();
+        }, 500);
+      });
+
       const activitémax = [
         "telephone arabe",
         "figure accrosport",
@@ -259,34 +261,6 @@
         chosenActivityDiv.style.opacity = "1";
         chosenActivityDiv.style.transform = "translate(-50%, 0)";
       }
-      // Vérifie si la page était en plein écran avant le refresh
-      window.onload = function () {
-        if (localStorage.getItem("fullscreen") === "true") {
-          document.documentElement.requestFullscreen();
-        }
-      };
-
-      // Fonction pour activer/désactiver le plein écran
-      function toggleFullscreen() {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen();
-          localStorage.setItem("fullscreen", "true"); // Sauvegarde l'état plein écran
-        } else {
-          document.exitFullscreen();
-          localStorage.setItem("fullscreen", "false"); // Désactive le stockage du mode plein écran
-        }
-      }
-
-      // Modifier le bouton refresh pour sauvegarder l'état avant reload
-      document
-        .querySelector(".refresh-button")
-        .addEventListener("click", function () {
-          localStorage.setItem(
-            "fullscreen",
-            document.fullscreenElement ? "true" : "false"
-          );
-          location.reload();
-        });
     </script>
   </body>
 </html>
