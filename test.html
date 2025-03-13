@@ -70,13 +70,13 @@
         background: linear-gradient(45deg, #ff5f6d, #ffc3a0);
         color: white;
         text-align: center;
-        line-height: 90px;
         border-radius: 50%;
         font-size: 24px;
         position: absolute;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         transition: all 0.3s ease;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
       }
@@ -210,6 +210,13 @@
         margin-top: 5px;
       }
 
+      .player-score {
+        font-size: 0.7em;
+        margin-top: 5px;
+        font-weight: bold;
+        color: #ffd700;
+      }
+
       #gameTitle {
         position: fixed;
         top: 2%;
@@ -236,6 +243,44 @@
         border-radius: 10px;
         z-index: 50;
       }
+
+      #scoreBoard {
+        position: fixed;
+        top: 20%;
+        right: 2%;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 1em;
+        z-index: 90;
+        text-align: left;
+        max-height: 60%;
+        overflow-y: auto;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        display: none;
+      }
+
+      .score-entry {
+        margin: 5px 0;
+        padding: 5px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .champion-badge {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background: gold;
+        color: black;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+      }
     </style>
   </head>
   <body>
@@ -256,6 +301,11 @@
 
     <div id="winnerAnnouncement">
       VICTOIRE DE <span id="winnerName">JOUEUR</span> ! 🏆
+    </div>
+
+    <div id="scoreBoard">
+      <h3 style="margin-top: 0">🏆 SCORES 🏆</h3>
+      <div id="scoreEntries"></div>
     </div>
 
     <!-- Bouton Refresh -->
@@ -296,7 +346,7 @@
 
       const duelElimination = [
         "Pile ou Face : Devinez si ce sera Pile ou Face !",
-        "Pierre-Feuille-Ciseaux : Un seul essai, pas de seconde chance !",
+        "Pierre-Feuille-Ciseaux : Un seul round, pas de seconde chance !",
         "Vote du Public : Qui a le style vestimentaire le plus original ?",
       ];
 
@@ -326,6 +376,11 @@
         "🧚",
         "🥷",
       ];
+      let playerScores = {};
+      let gameInProgress = false;
+
+      // Initialiser le tableau des scores
+      document.getElementById("scoreBoard").style.display = "block";
 
       document
         .getElementById("fingerContainer")
@@ -339,10 +394,15 @@
           }
 
           // Nettoyer les anciens doigts si c'est un nouveau jeu
-          if (playersInGame.length === 0 && eliminatedPlayers.length === 0) {
+          if (!gameInProgress) {
             fingers.forEach((f) => f.remove());
             fingers = [];
             touchPositions = {};
+            playersInGame = [];
+            eliminatedPlayers = [];
+            playerScores = {};
+            updateScoreboard();
+            gameInProgress = true;
           }
 
           for (let touch of event.touches) {
@@ -361,9 +421,15 @@
             // Attribuer un nom de joueur aléatoire
             let playerName =
               playerNames[Math.floor(Math.random() * playerNames.length)];
-            finger.innerHTML =
-              playerName + "<div class='player-name'>Joueur</div>";
             finger.dataset.playerName = playerName;
+            finger.dataset.score = "0";
+            playerScores[playerName] = 0;
+
+            // Ajouter les éléments d'affichage
+            finger.innerHTML =
+              playerName +
+              "<div class='player-name'>Joueur</div>" +
+              "<div class='player-score'>Score: 0</div>";
 
             document.getElementById("fingerContainer").appendChild(finger);
             fingers.push(finger);
@@ -387,6 +453,9 @@
             document.getElementById("chosenActivity").textContent =
               "Il faut au moins 2 joueurs pour commencer !";
           }
+
+          // Mettre à jour le tableau des scores
+          updateScoreboard();
         });
 
       document.addEventListener("touchend", function (event) {
@@ -397,23 +466,49 @@
             let fingerElement = touchPositions[id];
             // Retirer de la liste des joueurs en jeu s'il y est
             let index = playersInGame.indexOf(fingerElement);
-            if (index > -1) {
+            if (
+              index > -1 &&
+              document.getElementById("duelInterface").style.display !== "block"
+            ) {
               playersInGame.splice(index, 1);
             }
+
             // Supprimer l'élément du DOM si aucun duel n'est en cours
             if (
               document.getElementById("duelInterface").style.display !== "block"
             ) {
+              // Supprimer du tableau des scores
+              delete playerScores[fingerElement.dataset.playerName];
+
               fingerElement.remove();
               let fIndex = fingers.indexOf(fingerElement);
               if (fIndex > -1) {
                 fingers.splice(fIndex, 1);
               }
+
+              updateScoreboard();
             }
             delete touchPositions[id];
           }
         }
       });
+
+      function updateScoreboard() {
+        const scoreEntries = document.getElementById("scoreEntries");
+        scoreEntries.innerHTML = "";
+
+        // Trier les scores par ordre décroissant
+        const sortedScores = Object.entries(playerScores).sort(
+          (a, b) => b[1] - a[1]
+        );
+
+        sortedScores.forEach(([playerName, score]) => {
+          const entry = document.createElement("div");
+          entry.className = "score-entry";
+          entry.innerHTML = `${playerName} : ${score} points`;
+          scoreEntries.appendChild(entry);
+        });
+      }
 
       function setupDuel() {
         if (playersInGame.length < 2) {
@@ -488,12 +583,14 @@
           }
         }, 1000);
 
-        // Mettre à jour le message d'activité
+        // Mettre à jour le message d'activité avec le défi
         document.getElementById("chosenActivity").textContent =
           "DUEL: " +
           currentDuel.player1.dataset.playerName +
           " VS " +
           currentDuel.player2.dataset.playerName;
+        document.getElementById("instructions").textContent =
+          "DÉFI: " + currentDuel.challenge;
       }
 
       function startDuel() {
@@ -554,9 +651,17 @@
             ? currentDuel.player2
             : currentDuel.player1;
 
+        // Mettre à jour le score du gagnant
+        let winnerName = winner.dataset.playerName;
+        playerScores[winnerName] = (playerScores[winnerName] || 0) + 1;
+        winner.dataset.score = playerScores[winnerName];
+
+        // Mettre à jour l'affichage du score sur le cercle du joueur
+        winner.querySelector(".player-score").textContent =
+          "Score: " + playerScores[winnerName];
+
         // Annoncer le gagnant
-        document.getElementById("winnerName").textContent =
-          winner.dataset.playerName;
+        document.getElementById("winnerName").textContent = winnerName;
         document.getElementById("winnerAnnouncement").style.display = "block";
 
         // Marquer le perdant comme éliminé
@@ -566,6 +671,9 @@
           playersInGame.splice(index, 1);
           eliminatedPlayers.push(loser);
         }
+
+        // Mettre à jour le tableau des scores
+        updateScoreboard();
 
         // Fermer l'interface après un délai
         setTimeout(() => {
@@ -580,20 +688,35 @@
           if (playersInGame.length > 1) {
             document.getElementById("chosenActivity").textContent =
               "Prêt pour le prochain duel ? Gardez vos doigts sur l'écran !";
+            document.getElementById("instructions").textContent =
+              "Touchez tous l'écran pour continuer le tournoi !";
             selectionTimeout = setTimeout(setupDuel, 3000);
           } else if (playersInGame.length === 1) {
             // Champion final !
+            let champion = playersInGame[0];
             document.getElementById("chosenActivity").textContent =
-              "🏆 CHAMPION FINAL : " +
-              playersInGame[0].dataset.playerName +
-              " ! 🏆";
-            playersInGame[0].classList.add("chosen");
+              "🏆 CHAMPION FINAL : " + champion.dataset.playerName + " ! 🏆";
+            document.getElementById("instructions").textContent =
+              "Score final: " + champion.dataset.score + " victoires !";
+            champion.classList.add("chosen");
+
+            // Ajouter un badge de champion
+            if (!champion.querySelector(".champion-badge")) {
+              let badge = document.createElement("div");
+              badge.className = "champion-badge";
+              badge.textContent = "🏆";
+              champion.appendChild(badge);
+            }
+
+            // Signaler que le jeu est terminé
+            gameInProgress = false;
           } else {
             document.getElementById("chosenActivity").textContent =
               "Touchez l'écran pour commencer un nouveau jeu...";
+            document.getElementById("instructions").textContent =
+              "Posez tous un doigt sur l'écran pour entrer dans l'arène !";
             // Réinitialiser le jeu
-            playersInGame = [];
-            eliminatedPlayers = [];
+            gameInProgress = false;
           }
         }, 2000);
       }
