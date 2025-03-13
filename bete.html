@@ -49,8 +49,8 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         opacity: 0;
         transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-        z-index: 9999;
-        pointer-events: none;
+        z-index: 9999; /* Met au premier plan */
+        pointer-events: none; /* Empêche les interactions */
       }
 
       #fingerContainer {
@@ -120,6 +120,7 @@
     </button>
 
     <script>
+      // Définition des activités
       const activitémax = [
         "telephone arabe",
         "figure accrosport",
@@ -170,6 +171,14 @@
       let touchPositions = {};
       let selectionTimeout;
 
+      // Affichage du texte initial avant l'interaction
+      document.addEventListener("DOMContentLoaded", () => {
+        const chosenActivityDiv = document.getElementById("chosenActivity");
+        chosenActivityDiv.textContent = "Touchez l'écran pour commencer...";
+        chosenActivityDiv.style.opacity = "1";
+      });
+
+      // Gérer l'événement de toucher l'écran
       document
         .getElementById("fingerContainer")
         .addEventListener("touchstart", function (event) {
@@ -178,6 +187,7 @@
           fingers = [];
           touchPositions = {};
 
+          // Positionner les doigts sur l'écran
           for (let touch of event.touches) {
             let rect = event.target.getBoundingClientRect();
             let x = touch.clientX - rect.left;
@@ -199,6 +209,7 @@
           }
         });
 
+      // Sélectionner une activité aléatoire
       function chooseFingers() {
         if (fingers.length === 0) return;
 
@@ -217,11 +228,13 @@
         chosen.forEach((i) => fingers[i].classList.add("chosen"));
       }
 
+      // Choisir une phrase d'activité aléatoire
       function choisirPhrase() {
         let allActivities = [...activitémax, ...activité1, ...activité2];
         return allActivities[Math.floor(Math.random() * allActivities.length)];
       }
 
+      // Déterminer le nombre de doigts nécessaires
       function doigt(activite) {
         if (activitémax.includes(activite)) return fingers.length;
         if (activité1.includes(activite)) return 1;
@@ -229,6 +242,7 @@
         return -1;
       }
 
+      // Afficher l'activité choisie
       function afficherPhrase(phrase) {
         const chosenActivityDiv = document.getElementById("chosenActivity");
         chosenActivityDiv.textContent = "Activité choisie : " + phrase;
