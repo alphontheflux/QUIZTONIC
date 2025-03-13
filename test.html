@@ -135,6 +135,7 @@
     <button class="fullscreen-button" onclick="toggleFullscreen()">🫦</button>
 
     <script>
+      // Fonction pour entrer/sortir du mode plein écran
       function toggleFullscreen() {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen();
@@ -142,6 +143,19 @@
           document.exitFullscreen();
         }
       }
+
+      // Démarrer automatiquement en plein écran au chargement de la page
+      window.addEventListener("load", function () {
+        // Petit délai pour s'assurer que la page est bien chargée
+        setTimeout(function () {
+          document.documentElement.requestFullscreen().catch((err) => {
+            console.log(
+              `Erreur lors du passage en plein écran: ${err.message}`
+            );
+          });
+        }, 500);
+      });
+
       const activitémax = [
         "telephone arabe",
         "figure accrosport",
