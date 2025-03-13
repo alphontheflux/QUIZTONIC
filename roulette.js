@@ -1,4 +1,4 @@
-const activiteMax = [
+const activitémax =  [
   "Téléphone arabe",
   "Figure d'acrosport",
   "As-tu déjà ri du malheur de quelqu'un ?",
@@ -10,7 +10,7 @@ const activiteMax = [
   "Meilleure anecdote avec un bateau",
 ];
 
-const activite1 = [
+const activité1 =[
   "Roulade",
   "Pompe à une main",
   "Fais le poirier",
@@ -30,7 +30,7 @@ const activite1 = [
   "Traverse la salle les yeux bandés",
 ];
 
-const activite2 = [
+const activité2 = [
   "Invente ta rencontre avec une personne",
   "Décris quelqu'un en 3 adjectifs",
   "Pompes avec une personne sur le dos",
@@ -42,6 +42,46 @@ const activite2 = [
   "Reproduis la scène du Titanic",
   "Reproduis le porté de Dirty Dancing",
   "Changez de chaussures",
+];
+
+const items = [
+  "telephone arabe",
+  "figure accrosport",
+  "As tu déjà ri du malheur de quelqu'un ?",
+  "As tu déjà vomis dans un lieu public ?",
+  "Meilleur anecdote de soirée",
+  "Meilleur anecdote au bassin a flot",
+  "Meilleur anecdote avec un bureau",
+  "Meilleur anecdote avec un vélo",
+  "Meilleur anecdote avec un bateau",
+  "roulade",
+  "pompe à une main",
+  "fait le poirier",
+  "pictionnary ",
+  "invente une danse",
+  "raconte une histoire avec une voix aigue",
+  "speech sur un objet banal",
+  "présente la météo",
+  "envoie un selfi ridicule à tes parents",
+  "essaye de faire un tour de magie",
+  "karaoké",
+  "imite une personne autour de toi",
+  "Quelle est ton talent chaché",
+  "Quelle est le plat que tu as raté en cuisine",
+  "Quelle est le cadeau le plus bizarre que tu es reçu",
+  "Quelle est la pire mode que tu est suivi",
+  "traverse la salle les yeux bander",
+  "invente ta rencontre avec une personne",
+  "decris quelqu'un en 3 adjectif",
+  "pompe avec une personne sur le dos",
+  "course de chaise",
+  "course de brouette",
+  "concours de regard",
+  "lire les message avec une personne",
+  "fais une chason sur une personne",
+  "reproduit la scene du titanic",
+  "reproduit le portée de Dirty Dancing",
+  "Changer de chaussures",
 ];
 
 document.querySelector("#spinner").addEventListener("click", spin);
