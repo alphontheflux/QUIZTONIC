@@ -84,41 +84,13 @@
         transform: scale(1.3);
       }
 
-      button {
-        padding: 15px 40px;
-        font-size: 1.3em;
-        background-color: #ff5f6d;
-        border: none;
-        border-radius: 50px;
-        color: white;
-        cursor: pointer;
-        font-weight: 700;
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      button:hover {
-        background-color: #ff4081;
-      }
-
+      /* Boutons en bas à droite */
+      .fullscreen-button,
       .refresh-button {
-        background-color: #4caf50;
-      }
-
-      .refresh-button:hover {
-        background-color: #45a049;
-      }
-
-      /* Bouton plein écran en bas à droite */
-      .fullscreen-button {
         position: fixed;
         bottom: 15px;
-        right: 15px;
         width: 40px;
         height: 40px;
-        background-color: rgba(34, 34, 34, 0.8);
         border: none;
         border-radius: 50%;
         color: white;
@@ -129,17 +101,37 @@
         justify-content: center;
       }
 
+      /* Bouton plein écran */
+      .fullscreen-button {
+        right: 15px;
+        background-color: rgba(34, 34, 34, 0.8);
+      }
+
       .fullscreen-button:hover {
         background-color: rgba(68, 68, 68, 0.9);
+      }
+
+      /* Bouton refresh */
+      .refresh-button {
+        right: 65px;
+        background-color: rgba(76, 175, 80, 0.8);
+      }
+
+      .refresh-button:hover {
+        background-color: rgba(69, 160, 73, 0.9);
       }
     </style>
   </head>
   <body>
     <div id="chosenActivity">Touchez l'écran pour commencer...</div>
     <div id="fingerContainer"></div>
+
+    <!-- Bouton Refresh -->
     <button class="refresh-button" onclick="window.location.reload();">
-      Recommencer
+      🔄
     </button>
+
+    <!-- Bouton Plein Écran -->
     <button class="fullscreen-button" onclick="toggleFullscreen()">🔲</button>
 
     <script>
