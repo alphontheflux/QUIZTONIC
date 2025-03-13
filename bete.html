@@ -26,6 +26,15 @@
         text-align: center;
       }
 
+      h1 {
+        font-size: 3em;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+        margin-top: 80px;
+        letter-spacing: 3px;
+      }
+
       #chosenActivity {
         position: fixed;
         top: 8%;
@@ -44,71 +53,46 @@
         pointer-events: none;
       }
 
-      /* Conteneur des boutons en bas */
-      .bottom-buttons {
+      #fingerContainer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .finger {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(45deg, #ff5f6d, #ffc3a0);
+        color: white;
+        text-align: center;
+        line-height: 90px;
+        border-radius: 50%;
+        font-size: 24px;
+        position: absolute;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .chosen {
+        background: linear-gradient(45deg, #cd3c15, #917c7c);
+        color: #c8df45;
+        box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+        transform: scale(1.3);
+      }
+
+      /* Boutons en bas à droite */
+      .fullscreen-button,
+      .refresh-button {
         position: fixed;
         bottom: 15px;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        padding: 0 20px;
-      }
-
-      /* Bouton New Game */
-      .btn {
-        width: 150px;
-        height: 50px;
-        background-color: white;
-        color: #568fa6;
-        position: relative;
-        overflow: hidden;
-        font-size: 14px;
-        letter-spacing: 1px;
-        font-weight: 500;
-        text-transform: uppercase;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        border: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 3px;
-      }
-
-      .btn:before,
-      .btn:after {
-        content: "";
-        position: absolute;
-        width: 0;
-        height: 2px;
-        background-color: #44d8a4;
-        transition: all 0.3s cubic-bezier(0.35, 0.1, 0.25, 1);
-      }
-
-      .btn:hover:before,
-      .btn:hover:after {
-        width: 100%;
-      }
-
-      .btn p:before {
-        content: attr(data-title);
-        top: 50%;
-        transform: translateY(-50%);
-      }
-
-      .btn p:after {
-        content: attr(data-text);
-        top: 150%;
-        color: #44d8a4;
-      }
-
-      /* Bouton Plein Écran */
-      .fullscreen-button {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         border: none;
         border-radius: 10%;
-        background-color: rgba(34, 34, 34, 0.8);
         color: white;
         cursor: pointer;
         font-size: 20px;
@@ -117,8 +101,26 @@
         justify-content: center;
       }
 
+      /* Bouton plein écran */
+      .fullscreen-button {
+        right: 15px;
+        background-color: rgba(34, 34, 34, 0.8);
+      }
+
       .fullscreen-button:hover {
         background-color: rgba(68, 68, 68, 0.9);
+      }
+
+      /* Bouton refresh */
+      .refresh-button {
+        right: vw;
+        bottom: 10vh;
+        width: 30%;
+        background-color: rgba(76, 175, 80, 0.8);
+      }
+
+      .refresh-button:hover {
+        background-color: rgba(69, 160, 73, 0.9);
       }
     </style>
   </head>
@@ -126,21 +128,13 @@
     <div id="chosenActivity">Touchez l'écran pour commencer...</div>
     <div id="fingerContainer"></div>
 
-    <!-- Conteneur des boutons en bas -->
-    <div class="bottom-buttons">
-      <!-- Bouton New Game (Reload) -->
-      <button class="btn" onclick="window.location.reload();">
-        <span></span>
-        <p
-          data-start="Bonne chance!"
-          data-text="Start!"
-          data-title="New Game"
-        ></p>
-      </button>
+    <!-- Bouton Refresh -->
+    <button class="refresh-button" onclick="window.location.reload();">
+      relancer
+    </button>
 
-      <!-- Bouton Plein Écran -->
-      <button class="fullscreen-button" onclick="toggleFullscreen()">🫦</button>
-    </div>
+    <!-- Bouton Plein Écran -->
+    <button class="fullscreen-button" onclick="toggleFullscreen()">🫦</button>
 
     <script>
       function toggleFullscreen() {
@@ -150,30 +144,121 @@
           document.exitFullscreen();
         }
       }
-
-      // Activités du jeu
-      const activités = [
+      const activitémax = [
         "telephone arabe",
         "figure accrosport",
+        "As tu déjà ri du malheur de quelqu'un ?",
+        "As tu déjà vomis dans un lieu public ?",
+        "Meilleur anecdote de soirée",
+        "Meilleur anecdote au bassin a flot",
+        "Meilleur anecdote avec un bureau",
+        "Meilleur anecdote avec un vélo",
+        "Meilleur anecdote avec un bateau",
+      ];
+
+      const activité1 = [
+        "roulade",
         "pompe à une main",
+        "fait le poirier",
+        "pictionnary ",
+        "invente une danse",
+        "raconte une histoire avec une voix aigue",
+        "speech sur un objet banal",
+        "présente la météo",
+        "envoie un selfi ridicule à tes parents",
+        "essaye de faire un tour de magie",
         "karaoké",
         "imite une personne autour de toi",
-        "reproduit la scène du Titanic",
+        "Quelle est ton talent chaché",
+        "Quelle est le plat que tu as raté en cuisine",
+        "Quelle est le cadeau le plus bizarre que tu es reçu",
+        "Quelle est la pire mode que tu est suivi",
+        "traverse la salle les yeux bander",
+      ];
+
+      const activité2 = [
+        "invente ta rencontre avec une personne",
+        "decris quelqu'un en 3 adjectif",
+        "pompe avec une personne sur le dos",
+        "course de chaise",
+        "course de brouette",
+        "concours de regard",
+        "lire les message avec une personne",
+        "fais une chason sur une personne",
+        "reproduit la scene du titanic",
+        "reproduit le portée de Dirty Dancing",
         "Changer de chaussures",
       ];
 
       let fingers = [];
+      let touchPositions = {};
+      let selectionTimeout;
 
       document
         .getElementById("fingerContainer")
         .addEventListener("touchstart", function (event) {
           event.preventDefault();
+          fingers.forEach((f) => f.remove());
           fingers = [];
-          let activitéChoisie =
-            activités[Math.floor(Math.random() * activités.length)];
-          document.getElementById("chosenActivity").textContent =
-            "Activité choisie : " + activitéChoisie;
+          touchPositions = {};
+
+          for (let touch of event.touches) {
+            let rect = event.target.getBoundingClientRect();
+            let x = touch.clientX - rect.left;
+            let y = touch.clientY - rect.top;
+
+            let finger = document.createElement("div");
+            finger.classList.add("finger");
+            finger.style.left = `${x - 45}px`;
+            finger.style.top = `${y - 45}px`;
+
+            document.getElementById("fingerContainer").appendChild(finger);
+            fingers.push(finger);
+            touchPositions[touch.identifier] = finger;
+          }
+
+          clearTimeout(selectionTimeout);
+          if (fingers.length >= 1) {
+            selectionTimeout = setTimeout(chooseFingers, 1500);
+          }
         });
+
+      function chooseFingers() {
+        if (fingers.length === 0) return;
+
+        let phrase = choisirPhrase();
+        afficherPhrase(phrase);
+        let nombreDoigts = doigt(phrase);
+
+        fingers.forEach((f) => f.classList.remove("chosen"));
+        let chosen = [];
+
+        while (chosen.length < nombreDoigts && chosen.length < fingers.length) {
+          let index = Math.floor(Math.random() * fingers.length);
+          if (!chosen.includes(index)) chosen.push(index);
+        }
+
+        chosen.forEach((i) => fingers[i].classList.add("chosen"));
+      }
+
+      function choisirPhrase() {
+        let allActivities = [...activitémax, ...activité1, ...activité2];
+        return allActivities[Math.floor(Math.random() * allActivities.length)];
+      }
+
+      function doigt(activite) {
+        if (activitémax.includes(activite)) return fingers.length;
+        if (activité1.includes(activite)) return 1;
+        if (activité2.includes(activite)) return 2;
+        return -1;
+      }
+
+      function afficherPhrase(phrase) {
+        const chosenActivityDiv = document.getElementById("chosenActivity");
+        chosenActivityDiv.textContent = "Activité choisie : " + phrase;
+        chosenActivityDiv.style.opacity = "1";
+        chosenActivityDiv.style.transform = "translate(-50%, 0)";
+      }
     </script>
   </body>
 </html>
