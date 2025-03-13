@@ -247,11 +247,11 @@
         chosen.forEach((i) => fingers[i].classList.add("chosen"));
       }
 
-      function choisirPhrase() {
-        let allActivities = [...activitémax, ...activité1, ...activité2];
-        let randomIndex = Math.floor(Math.random() * allActivities.length);
-        return allActivities[randomIndex];
-      }
+      // function choisirPhrase() {
+      //   let allActivities = [...activitémax, ...activité1, ...activité2];
+      //   let randomIndex = Math.floor(Math.random() * allActivities.length);
+      //   return allActivities[randomIndex];
+      // }
 
       function doigt(activite) {
         if (activitémax.includes(activite)) return fingers.length;
