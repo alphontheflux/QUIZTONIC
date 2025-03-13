@@ -224,9 +224,9 @@
         if (fingers.length === 0) return;
 
         let phrase = choisirPhrase();
-        let nombreDoigts = doigt(phrase);
+        let nombreDoigts = doigt(midPhrase);
 
-        console.log(`Phrase choisie : ${phrase}`);
+        console.log(`Phrase choisie : ${midPhrase}`);
         console.log(`Nombre de doigts sélectionnés : ${nombreDoigts}`);
 
         fingers.forEach((f) => f.classList.remove("chosen"));
