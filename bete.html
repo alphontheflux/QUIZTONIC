@@ -11,166 +11,46 @@
     <style>
       body {
         font-family: "Poppins", sans-serif;
+        text-align: center;
         margin: 0;
         padding: 0;
         background: linear-gradient(135deg, #a8c0ff, #3f87a6);
         height: 100vh;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #fff;
-        overflow: hidden;
         flex-direction: column;
-      }
-
-      h1 {
-        font-size: 3em;
-        font-weight: 700;
-        text-transform: uppercase;
-        text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
-        margin-bottom: 40px;
-        text-align: center;
-        letter-spacing: 3px;
-      }
-
-      /* Zone de toucher qui prend tout l'écran */
-      #fingerContainer {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 0;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
         align-items: center;
-        flex-wrap: wrap;
-        gap: 15px;
-        touch-action: none;
+        justify-content: center;
+        color: #fff;
       }
-
-      .finger {
-        width: 120px;
-        height: 120px;
-        background: linear-gradient(45deg, #ff5f6d, #ffc3a0);
-        color: white;
-        text-align: center;
-        line-height: 90px;
-        border-radius: 50%;
-        font-size: 24px;
-        position: absolute;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      }
-
-      .finger.shrink {
-        width: 80px;
-        height: 80px;
-        line-height: 70px;
-      }
-
-      .chosen {
-        background: linear-gradient(45deg, #cd3c15, #eb0303);
-        color: #c8df45;
-        box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
-        width: 120px;
-        height: 120px;
-        line-height: 120px;
-        transform: scale(1.3);
-        transition: all 0.5s ease-in-out;
-      }
-
-      button {
-        padding: 15px 40px;
-        font-size: 1.3em;
-        background-color: #ff5f6d;
-        border: none;
-        border-radius: 50px;
-        color: white;
-        cursor: pointer;
-        font-weight: 700;
-        transition: all 0.3s ease;
-        position: absolute;
-        bottom: 20px; /* Placer le bouton au bas de l'écran */
-        left: 50%;
-        transform: translateX(-50%);
-        text-transform: uppercase;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      }
-
-      button:hover {
-        background-color: #ff4081;
-        transform: scale(1.05);
-      }
-
-      .refresh-button {
-        background-color: #4caf50;
-      }
-
-      .refresh-button:hover {
-        background-color: #45a049;
+      #resultat {
+        font-size: 1.5em;
+        font-weight: bold;
+        margin-top: 20px;
       }
     </style>
   </head>
   <body>
-    <div>
-      <h1>Quiz Tonic</h1>
-      <div id="fingerContainer"></div>
-      <button class="refresh-button" onclick="window.location.reload();">
-        Recommencer
-      </button>
-    </div>
+    <h1>Quiz Tonic</h1>
+    <p id="resultat"></p>
+    <div id="fingerContainer"></div>
+    <button class="refresh-button" onclick="window.location.reload();">
+      Recommencer
+    </button>
 
-    <script type="module">
-      import { midPhrase } from "roulette.js";
-
+    <script>
       const activitémax = [
         "telephone arabe",
         "figure accrosport",
         "As tu déjà ri du malheur de quelqu'un ?",
         "As tu déjà vomis dans un lieu public ?",
-        "Meilleur anecdote de soirée",
-        "Meilleur anecdote au bassin a flot",
-        "Meilleur anecdote avec un bureau",
-        "Meilleur anecdote avec un vélo",
-        "Meilleur anecdote avec un bateau",
       ];
 
-      const activité1 = [
-        "roulade",
-        "pompe à une main",
-        "fait le poirier",
-        "pictionnary ",
-        "invente une danse",
-        "raconte une histoire avec une voix aigue",
-        "speech sur un objet banal",
-        "présente la météo",
-        "envoie un selfi ridicule à tes parents",
-        "essaye de faire un tour de magie",
-        "karaoké",
-        "imite une personne autour de toi",
-        "Quelle est ton talent chaché",
-        "Quelle est le plat que tu as raté en cuisine",
-        "Quelle est le cadeau le plus bizarre que tu es reçu",
-        "Quelle est la pire mode que tu est suivi",
-        "traverse la salle les yeux bander",
-      ];
+      const activité1 = ["roulade", "pompe à une main", "fait le poirier"];
 
       const activité2 = [
         "invente ta rencontre avec une personne",
-        "decris quelqu'un en 3 adjectif",
+        "decris quelqu'un en 3 adjectifs",
         "pompe avec une personne sur le dos",
-        "course de chaise",
-        "course de brouette",
-        "concours de regard",
-        "lire les message avec une personne",
-        "fais une chason sur une personne",
-        "reproduit la scene du titanic",
-        "reproduit le portée de Dirty Dancing",
-        "Changer de chaussures",
       ];
 
       let fingers = [];
@@ -181,8 +61,6 @@
         .getElementById("fingerContainer")
         .addEventListener("touchstart", function (event) {
           event.preventDefault();
-
-          // Supprime les éléments existants
           fingers.forEach((f) => f.remove());
           fingers = [];
           touchPositions = {};
@@ -208,27 +86,11 @@
           }
         });
 
-      document
-        .getElementById("fingerContainer")
-        .addEventListener("touchend", function (event) {
-          for (let touch of event.changedTouches) {
-            let finger = touchPositions[touch.identifier];
-            if (finger) {
-              finger.remove();
-              fingers = fingers.filter((f) => f !== finger);
-              delete touchPositions[touch.identifier];
-            }
-          }
-        });
-
       function chooseFingers() {
         if (fingers.length === 0) return;
 
-        let phrase = midPhrase;
-        let nombreDoigts = doigt(midPhrase);
-
-        console.log(`Phrase choisie : ${midPhrase}`);
-        console.log(`Nombre de doigts sélectionnés : ${nombreDoigts}`);
+        let phrase = choisirPhrase();
+        let nombreDoigts = doigt(phrase);
 
         fingers.forEach((f) => f.classList.remove("chosen"));
 
@@ -246,18 +108,22 @@
         }
 
         chosen.forEach((i) => fingers[i].classList.add("chosen"));
+
+        document.getElementById(
+          "resultat"
+        ).textContent = `Activité choisie : ${phrase}`;
       }
 
-      // function choisirPhrase() {
-      //   let allActivities = [...activitémax, ...activité1, ...activité2];
-      //   let randomIndex = Math.floor(Math.random() * allActivities.length);
-      //   return allActivities[randomIndex];
-      // }
+      function choisirPhrase() {
+        let allActivities = [...activitémax, ...activité1, ...activité2];
+        let randomIndex = Math.floor(Math.random() * allActivities.length);
+        return allActivities[randomIndex];
+      }
 
-      function doigt(phrase) {
-        if (activitémax.includes(phrase)) return fingers.length;
-        if (activité1.includes(phrase)) return 1;
-        if (activité2.includes(phrase)) return 2;
+      function doigt(activite) {
+        if (activitémax.includes(activite)) return fingers.length;
+        if (activité1.includes(activite)) return 1;
+        if (activité2.includes(activite)) return 2;
         return -1;
       }
     </script>
