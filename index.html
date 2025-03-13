@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/acceuil.css">
     <script src="/acceuil.js" defer></script>
     <title>Accueil</title>
 </head>
@@ -18,11 +17,97 @@
     <div id="main-content" class="hidden">
       <div class="container">
         <div class="boutton-conteneur">
-            <a href="/roulette.html">
+            <a href="/bete.html">
                 <button>Jouer</button>
             </a>
         </div>
       </div>
     </div>
+    <style>body {
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url('/style/image/fond.jpg') no-repeat center;
+      background-size: cover;
+  }
+  
+  
+  .container {
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+      top: 5%;
+  }
+  
+  
+  @media (min-width: 1024px) {
+      body {
+          background-size: contain;
+          background-color: black;
+      }
+  }
+  
+  .boutton-conteneur button {
+      font-size: 25px;
+      margin-top: 70px;
+      padding: 25px 50px;
+      border: 3px solid black;
+      border-radius: 8px;
+      background-color: transparent;
+      color: black;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+      font-weight: bold;
+  }
+  
+  .boutton-conteneur button:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+      transform: scale(1.05);
+  }
+  
+  
+  #video-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle, #ff66b2 20%, #8000ff 80%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      overflow: hidden;
+  }
+  
+  
+  #intro-video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover; 
+  }
+  
+  
+  .hidden {
+      display: none;
+  }
+  
+  .fade-out {
+      opacity: 0;
+      transition: opacity 1s ease-out;
+  }
+  
+  #main-content {
+      opacity: 0;
+      transition: opacity 1s ease-in;
+  }
+  </style>
   </body>
   
