@@ -42,15 +42,17 @@
         transform: translateX(-50%);
         width: 75%;
         max-width: 600px;
-        font-size: 1.5em;
-        background: rgba(142, 24, 95, 0.8);
+        font-size: 2em;
+        font-weight: bold;
+        background: rgba(142, 24, 95, 0.9);
         padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(115, 146, 44, 0.1);
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(115, 146, 44, 0.2);
         opacity: 1;
         transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         z-index: 9999;
         pointer-events: none;
+        text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
       }
 
       #fingerContainer {
@@ -87,7 +89,7 @@
       .fullscreen-button,
       .refresh-button {
         position: fixed;
-        bottom: 15px;
+        bottom: 5%;
         width: 40px;
         height: 40px;
         border: none;
@@ -110,10 +112,21 @@
       }
 
       .refresh-button {
-        right: 50vh;
-        bottom: 10vh;
-        width: 30%;
+        bottom: 5%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40%;
+        height: 50px;
+        font-size: 1.5em;
         background-color: rgba(76, 175, 80, 0.8);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .refresh-button:hover {
@@ -126,7 +139,7 @@
     <div id="fingerContainer"></div>
 
     <button class="refresh-button" onclick="window.location.reload();">
-      relancer
+      🔄 Recommencer
     </button>
 
     <button class="fullscreen-button" onclick="toggleFullscreen()">🫦</button>
@@ -140,9 +153,8 @@
         }
       }
 
-      // Le mode plein écran est activé immédiatement après le chargement de la page
       document.addEventListener("DOMContentLoaded", () => {
-        toggleFullscreen(); // Activation automatique en plein écran
+        toggleFullscreen();
       });
 
       const activitémax = [
@@ -151,44 +163,21 @@
         "As tu déjà ri du malheur de quelqu'un ?",
         "As tu déjà vomis dans un lieu public ?",
         "Meilleur anecdote de soirée",
-        "Meilleur anecdote au bassin a flot",
-        "Meilleur anecdote avec un bureau",
-        "Meilleur anecdote avec un vélo",
-        "Meilleur anecdote avec un bateau",
       ];
 
       const activité1 = [
         "roulade",
         "pompe à une main",
         "fait le poirier",
-        "pictionnary ",
+        "pictionnary",
         "invente une danse",
-        "raconte une histoire avec une voix aigue",
-        "speech sur un objet banal",
-        "présente la météo",
-        "envoie un selfi ridicule à tes parents",
-        "essaye de faire un tour de magie",
-        "karaoké",
-        "imite une personne autour de toi",
-        "Quelle est ton talent chaché",
-        "Quelle est le plat que tu as raté en cuisine",
-        "Quelle est le cadeau le plus bizarre que tu es reçu",
-        "Quelle est la pire mode que tu est suivi",
-        "traverse la salle les yeux bander",
       ];
 
       const activité2 = [
         "invente ta rencontre avec une personne",
-        "decris quelqu'un en 3 adjectif",
+        "decris quelqu'un en 3 adjectifs",
         "pompe avec une personne sur le dos",
         "course de chaise",
-        "course de brouette",
-        "concours de regard",
-        "lire les message avec une personne",
-        "fais une chason sur une personne",
-        "reproduit la scene du titanic",
-        "reproduit le portée de Dirty Dancing",
-        "Changer de chaussures",
       ];
 
       let fingers = [];
